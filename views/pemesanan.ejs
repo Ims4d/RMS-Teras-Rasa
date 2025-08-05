@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pemesanan</title>
+  <style>
+    .tab-content {
+      display: none;
+      padding: 20px 0;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .menu-item {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      background: #f9f9f9;
+      transition: box-shadow 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .menu-item:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .menu-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 2px solid #ddd;
+    }
+    .menu-content {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .menu-info {
+      flex: 1;
+    }
+    .menu-item button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      flex-shrink: 0;
+    }
+    .menu-item button:hover {
+      background-color: #218838;
+    }
+    .menu-item button:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid #eee;
+      margin: 8px 0;
+      border-radius: 6px;
+      background: white;
+    }
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .quantity-controls button {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #ccc;
+      background: white;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+    .quantity-controls button:hover {
+      background: #f8f9fa;
+      border-color: #007bff;
+    }
+    .quantity-display {
+      min-width: 30px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 2px solid #eee;
+    }
+    .btn-primary {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    .btn-primary:hover {
+      background: #0056b3;
+    }
+    .btn-primary:disabled {
+      background: #6c757d;
+      cursor: not-allowed;
+    }
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    .btn-secondary:hover {
+      background: #545b62;
+    }
+    .summary-section {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .total-price {
+      font-size: 24px;
+      font-weight: bold;
+      color: #28a745;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .welcome-section {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .welcome-section h2 {
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+
+    .welcome-section input {
+      padding: 12px 20px;
+      font-size: 18px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      width: 100%;
+      max-width: 400px;
+      margin-top: 15px;
+    }
+    .welcome-section input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+    }
+    .success-message {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .success-message h2 {
+      color: #28a745;
+      margin-bottom: 20px;
+    }
+
+    .order-summary-list {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .order-summary-list ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .order-summary-list li {
+      padding: 10px;
+      border-bottom: 1px solid #dee2e6;
+      font-size: 16px;
+    }
+
+    .order-summary-list li:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+
+<body>
+  <% if (typeof done !== 'undefined' && done) { %>
+    <div class="success-message">
+      <h2>Terima kasih, <%= nama_pelanggan %>!</h2>
+      <p>Pesanan Anda telah kami terima. Anda memesan:</p>
+      <div class="order-summary-list">
+        <ul>
+          <% pesanan.forEach(item => { %>
+            <li>
+              <%= item.nama_menu %> - Rp <%= item.harga %> x <%= item.jumlah %> = Rp <%= item.sub_total %>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+      <div class="total-price">Total Harga: Rp <%= total_harga %></div>
+    </div>
+  <% } else { %>
+    <form id="order-form" action="/pemesanan" method="POST">
+      <input type="hidden" name="id_meja" value="<%= id_meja %>" />
+      <input type="hidden" name="menu_pesanan" id="menu-pesanan" />
+      <input type="hidden" name="total_harga" id="total-harga" />
+
+      <!-- Tab Nama Pelanggan -->
+      <div id="content-nama" class="tab-content active">
+        <div class="welcome-section">
+          <h2>Selamat Datang!</h2>
+          <h4>Masukkan Nama Anda</h4>
+          <input
+            type="text"
+            name="nama_pelanggan"
+            id="input-name"
+            placeholder="Masukkan nama Anda..."
+            autocomplete="off"
+          />
+        </div>
+      </div>
+
+      <!-- Tab Pilih Menu -->
+      <div id="content-menu" class="tab-content">
+        <h2>Pilih Menu Pesanan</h2>
+        <div id="menu-list">
+          <% menu.forEach(({ id_menu, nama_menu, harga, jenis_menu }) => { %>
+            <div class="menu-item">
+              <img
+                src="/images/menu/<%= id_menu %>.jpg"
+                alt="<%= nama_menu %>"
+                class="menu-image"
+              />
+              <div class="menu-content">
+                <div class="menu-info">
+                  <div style="font-weight: bold; font-size: 18px;"><%= nama_menu %></div>
+                  <div style="color: #666; margin: 5px 0;">Harga: Rp <%= harga.toLocaleString('id-ID') %></div>
+                  <div style="color: #888; font-size: 14px;"><%= jenis_menu %></div>
+                </div>
+                <button
+                  type="button"
+                  class="add-to-cart"
+                  data-id="<%= id_menu %>"
+                  data-nama="<%= nama_menu %>"
+                  data-harga="<%= harga %>"
+                >
+                  Tambah
+                </button>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+
+        <div class="summary-section">
+          <h3>Pesanan Anda</h3>
+          <div id="order-summary">Belum ada pesanan.</div>
+        </div>
+      </div>
+
+      <!-- Tab Konfirmasi -->
+      <div id="content-konfirmasi" class="tab-content">
+        <h2>Konfirmasi Pemesanan</h2>
+        <div class="summary-section">
+          <div id="final-menu-list"></div>
+          <div class="total-price">Total Harga: Rp <span id="total-price">0</span></div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button type="button" id="prev-btn" class="btn-secondary" onclick="previousTab()" style="display: none;">
+          Kembali
+        </button>
+        <button type="button" id="next-btn" class="btn-primary" onclick="nextTab()" disabled>
+          Lanjutkan
+        </button>
+      </div>
+    </form>
+  <% } %>
+
+  <script src="/javascripts/pemesanan.js"></script>
+</body>
+</html>

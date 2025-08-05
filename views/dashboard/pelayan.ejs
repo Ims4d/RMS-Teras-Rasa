@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <style>
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .tabs button { margin-right: 10px; padding: 10px 15px; cursor: pointer; }
+    .tabs button.active { background-color: #007bff; color: white; }
+    .column { float: left; width: 45%; margin-right: 5%; }
+    .row::after { content: ""; display: table; clear: both; }
+    .stats-container { display: flex; gap: 30px; margin-bottom: 20px; }
+    .stat-box { text-align: center; padding: 15px; border: 1px solid #ddd; border-radius: 8px; min-width: 120px; }
+    .pesanan-item { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 8px; background-color: #f9f9f9; }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 2% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 90%;
+      max-width: 800px;
+      border-radius: 8px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover { color: black; }
+    .menu-item {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+    .menu-item button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      border: 1px solid #eee;
+      margin: 5px 0;
+      border-radius: 4px;
+    }
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .quantity-controls button {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #ccc;
+      background: white;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    .form-tab { display: none; }
+    .form-tab.active { display: block; }
+    .menu-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .menu-actions button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1><%= title %></h1>
+    <form action="pelayan/logout" method="post">
+      <button type="submit" style="padding: 10px 20px; background-color: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer;">Logout</button>
+    </form>
+  </div>
+
+  <div class="stats-container">
+    <div class="stat-box">
+      <strong>Meja Tersedia</strong><br/>
+      <span style="font-size: 24px;"><%= meja.filter(p => p.status_meja === 'KOSONG').length %></span>
+    </div>
+    <div class="stat-box">
+      <strong>Meja Terisi</strong><br/>
+      <span style="font-size: 24px;"><%= meja.filter(p => p.status_meja === 'TERISI').length %></span>
+    </div>
+    <div class="stat-box">
+      <strong>Pesanan Pending</strong><br/>
+      <span style="font-size: 24px;"><%= pesanan.filter(p => p.status_pesanan === 'BELUM_DIMASAK').filter(p => menuPesanan.filter(m => m.id_pesanan === p.id_pesanan).some(m => m.ketersediaan === 'TIDAK_TERSEDIA')).length %></span>
+    </div>
+    <div class="stat-box">
+      <strong>Siap Disajikan</strong><br/>
+      <span style="font-size: 24px;"><%= pesanan.filter(p => p.status_pesanan === 'SIAP_DISAJIKAN').length %></span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab('tab-belum-dimasak')" id="btn-belum-dimasak">Belum Dimasak</button>
+    <button onclick="showTab('tab-sedang-dimasak')" id="btn-sedang-dimasak">Sedang Dimasak</button>
+    <button onclick="showTab('tab-menu-tidak-tersedia')" id="btn-menu-tidak-tersedia">Menu Tidak Tersedia</button>
+    <button onclick="showTab('tab-siap-disajikan')" id="btn-siap-disajikan">Siap Disajikan</button>
+  </div>
+
+  <!-- Tab Belum Dimasak -->
+  <div id="tab-belum-dimasak" class="tab-content">
+    <h2>Belum Dimasak</h2>
+    <% pesanan.filter(p => p.status_pesanan === 'BELUM_DIMASAK').forEach(p => { %>
+      <div class="pesanan-item">
+        <strong>Meja <%= p.id_meja %></strong><br/>
+        <div style="margin: 10px 0;">
+          <%= menuPesanan.filter(m => m.id_pesanan === p.id_pesanan && m.ketersediaan !== 'TIDAK_TERSEDIA').map(m => `${m.jumlah}x ${m.nama_menu}`).join(', ') %>
+        </div>
+        <div>Total: Rp <%= p.total_harga || 0 %></div>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- Tab Sedang Dimasak -->
+  <div id="tab-sedang-dimasak" class="tab-content">
+    <h2>Sedang Dimasak</h2>
+    <% pesanan.filter(p => p.status_pesanan === 'SEDANG_DIMASAK').forEach(p => { %>
+      <div class="pesanan-item">
+        <strong>Meja <%= p.id_meja %></strong><br/>
+        <div style="margin: 10px 0;">
+          <%= menuPesanan.filter(m => m.id_pesanan === p.id_pesanan).map(m => `${m.jumlah}x ${m.nama_menu}`).join(', ') %>
+        </div>
+        <div>Total: Rp <%= p.total_harga || 0 %></div>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- Tab Menu Tidak Tersedia -->
+  <div id="tab-menu-tidak-tersedia" class="tab-content">
+    <h2>Menu Tidak Tersedia</h2>
+    <% const menuTidakTersedia = menuPesanan.filter(m => m.ketersediaan === 'TIDAK_TERSEDIA');
+      const grouped = {};
+
+      menuTidakTersedia.forEach(m => {
+          if (!grouped[m.id_pesanan]) grouped[m.id_pesanan] = [];
+          grouped[m.id_pesanan].push(m);
+      });
+
+      for (const id_pesanan in grouped) {
+        const pesananData = pesanan.find(p => p.id_pesanan == id_pesanan);
+        if (!pesananData) continue; %>
+        <div class="pesanan-item">
+          <h3>Meja <%= pesananData.id_meja %></h3>
+          <div>Total Pesanan: Rp <%= pesananData.total_harga || 0 %></div>
+          <% grouped[id_pesanan].forEach(m => { %>
+            <div style="border: 1px solid #ccc; padding: 10px; margin: 5px 0; background: #fff;">
+              <div><strong><%= m.jumlah %>x <%= m.nama_menu %></strong></div>
+              <div>Sub Total: Rp <%= m.sub_total %></div>
+              <div class="menu-actions">
+                <button class="btn-delete" onclick="deleteMenuPesanan('<%= m.id_menu %>', '<%= m.id_pesanan %>')">Hapus</button>
+                <button class="btn-change" onclick="openChangeMenuModal('<%= m.id_menu %>', '<%= m.id_pesanan %>', '<%= m.nama_menu %>', '<%= m.jumlah %>')">Ganti</button>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+    <% } %>
+  </div>
+
+  <!-- Tab Siap Disajikan -->
+  <div id="tab-siap-disajikan" class="tab-content">
+    <h2>Siap Disajikan</h2>
+    <% pesanan.filter(p => p.status_pesanan === 'SIAP_DISAJIKAN').forEach(p => { %>
+      <div class="pesanan-item">
+        <strong>Meja <%= p.id_meja %></strong><br/>
+        <div style="margin: 10px 0;">
+          <%= menuPesanan.filter(m => m.id_pesanan === p.id_pesanan).map(m => `${m.jumlah}x ${m.nama_menu}`).join(', ') %>
+        </div>
+        <div>Total: Rp <%= p.total_harga || 0 %></div>
+        <button class="btn-served" onclick="updateStatusPesanan('<%= p.id_pesanan %>', '<%= id_pelayan %>', 'SUDAH_DISAJIKAN')">Sudah Disajikan</button>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- Modal Ganti Menu -->
+  <div class="modal" id="modal-ganti-menu">
+    <div class="modal-content">
+      <span class="close" onclick="closeChangeMenuModal()">&times;</span>
+      <h2>Ganti Menu</h2>
+
+      <!-- Form Tab Pilih Menu -->
+      <div class="form-tab active" id="tab-pilih-menu">
+        <h3>Pilih Menu Pengganti</h3>
+        <div id="menu-list">
+          <% menu.forEach(({ id_menu, nama_menu, harga, jenis_menu }) => { %>
+            <div class="menu-item">
+              <div><strong><%= nama_menu %></strong></div>
+              <div>Harga: Rp <%= harga.toLocaleString('id-ID') %></div>
+              <div>Jenis: <%= jenis_menu %></div>
+              <button type="button" onclick="selectNewMenu('<%= id_menu %>', '<%= nama_menu %>', '<%= harga %>')">Pilih</button>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+
+      <!-- Form Tab Konfirmasi Penggantian -->
+      <div class="form-tab" id="tab-konfirmasi">
+        <h3>Konfirmasi Penggantian</h3>
+        <div id="change-summary"></div>
+        <div class="quantity-controls">
+          <label>Jumlah:</label>
+          <button type="button" onclick="changeQuantity(-1)">-</button>
+          <span id="new-quantity">1</span>
+          <button type="button" onclick="changeQuantity(1)">+</button>
+        </div>
+        <div style="margin: 20px 0;">
+          <strong>Sub Total: Rp <span id="new-subtotal">0</span></strong>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button type="button" onclick="showFormTab('tab-pilih-menu')">Kembali</button>
+          <button type="button" onclick="confirmChangeMenu()">Konfirmasi Perubahan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/javascripts/pelayan.js"></script>
+</body>
+</html>

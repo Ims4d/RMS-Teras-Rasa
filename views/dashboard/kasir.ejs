@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <style>
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .tabs button { margin-right: 10px; padding: 10px 15px; cursor: pointer; }
+    .tabs button.active { background-color: #007bff; color: white; }
+    .column { float: left; width: 45%; margin-right: 5%; }
+    .row::after { content: ""; display: table; clear: both; }
+    .stats-container { display: flex; gap: 30px; margin-bottom: 20px; }
+    .stat-box { text-align: center; padding: 15px; border: 1px solid #ddd; border-radius: 8px; min-width: 120px; }
+    .pesanan-item { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 8px; background-color: #f9f9f9; }
+    .pesanan-item.selected { background: #e7f3ff; border-color: #007bff; }
+    .btn-bayar {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .btn-bayar:disabled {
+      background: #6c757d;
+      cursor: not-allowed;
+    }
+    .btn-proses {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    .btn-cetak {
+      background: #ffc107;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .detail-pembayaran {
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 5px;
+      background: white;
+    }
+    .riwayat-item {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+      background: #f9f9f9;
+    }
+    .total-harga {
+      font-size: 18px;
+      font-weight: bold;
+      color: #28a745;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1><%= title %></h1>
+    <form action="kasir/logout" method="post">
+      <button type="submit" style="padding: 10px 20px; background-color: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer;">Logout</button>
+    </form>
+  </div>
+
+  <div class="stats-container">
+    <div class="stat-box">
+      <strong>Menunggu Bayar</strong><br/>
+      <span style="font-size: 24px;"><%= pesanan.filter(p => p.status_pesanan === 'SUDAH_DISAJIKAN').length %></span>
+    </div>
+    <div class="stat-box">
+      <strong>Pendapatan Hari Ini</strong><br/>
+      <span style="font-size: 24px;">Rp <%= riwayatPembayaran.reduce((sum, p) => sum + p.harga_total, 0).toLocaleString('id-ID') %></span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab('tab-proses-pembayaran')" id="btn-proses-pembayaran">Proses Pembayaran</button>
+    <button onclick="showTab('tab-riwayat-pembayaran')" id="btn-riwayat-pembayaran">Riwayat Pembayaran</button>
+  </div>
+
+  <!-- Tab Proses Pembayaran -->
+  <div id="tab-proses-pembayaran" class="tab-content">
+    <div class="row">
+      <!-- Kolom Menunggu Pembayaran -->
+      <div class="column">
+        <h2>Menunggu Pembayaran</h2>
+        <% pesanan.filter(p => p.status_pesanan === 'SUDAH_DISAJIKAN').forEach(p => { %>
+          <div class="pesanan-item" id="item-<%= p.id_pesanan %>">
+            <strong>Meja <%= p.id_meja %></strong><br/>
+            <small>Waktu Pesan: <%= new Date(p.waktu_pesan).toLocaleString('id-ID') %></small><br/>
+            <div style="margin: 10px 0;">
+              <% menuPesanan.filter(m => m.id_pesanan === p.id_pesanan).forEach(m => { %>
+                <div><%= m.jumlah %>x <%= m.nama_menu %> - Rp <%= m.sub_total.toLocaleString('id-ID') %></div>
+              <% }) %>
+            </div>
+            <div class="total-harga">Total: Rp <%= p.total_harga.toLocaleString('id-ID') %></div>
+            <button class="btn-bayar" id="btn-<%= p.id_pesanan %>" onclick="pilihBayar('<%= p.id_pesanan %>')">Pilih untuk Bayar</button>
+          </div>
+        <% }) %>
+        <% if (pesanan.filter(p => p.status_pesanan === 'SUDAH_DISAJIKAN').length === 0) { %>
+            <p>Tidak ada pesanan yang menunggu pembayaran.</p>
+        <% } %>
+      </div>
+
+      <!-- Kolom Pembayaran Yang Dipilih -->
+      <div class="column">
+        <h2>Detail Pembayaran</h2>
+        <% pesanan.filter(p => p.status_pesanan === 'SUDAH_DISAJIKAN').forEach(p => { %>
+          <div id="detail-pembayaran-<%= p.id_pesanan %>" class="detail-pembayaran" style="display: none;">
+            <h3>Detail Pesanan</h3>
+            <strong>Meja <%= p.id_meja %></strong><br/>
+            <small>Pelanggan: <%= pelanggan.find(m => m.id_pelanggan == p.id_pelanggan).nama_pelanggan %></small><br/>
+            <small>Waktu Pesan: <%= new Date(p.waktu_pesan).toLocaleString('id-ID') %></small><br/>
+            <div style="margin: 15px 0;">
+              <% menuPesanan.filter(m => m.id_pesanan == p.id_pesanan).forEach(m => { %>
+                <div style="display: flex; justify-content: space-between; margin: 5px 0;">
+                  <span><%= m.jumlah %>x <%= m.nama_menu %></span>
+                  <span>Rp <%= m.sub_total.toLocaleString('id-ID') %></span>
+                </div>
+              <% }) %>
+            </div>
+            <div class="total-harga" style="text-align: right; font-size: 20px;">
+              Total: Rp <%= p.total_harga.toLocaleString('id-ID') %>
+            </div>
+            <button class="btn-proses" id="btn-proses" onclick="prosesPembayaran('<%= p.id_pesanan %>', '<%= id_kasir %>', '<%= p.id_meja %>', '<%= p.id_pelanggan %>', '<%= p.total_harga %>', '<%= p.waktu_pesan %>')">Proses Pembayaran</button>
+            <button class="btn-cetak" id="btn-cetak" onclick="cetakNota('<%= p.id_pesanan %>')">Cetak Nota</button>
+          </div>
+        <% }) %>
+        <div id="placeholder" style="text-align: center; color: #666; padding: 50px;">
+          Pilih pesanan dari daftar di sebelah kiri untuk memulai proses pembayaran
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Riwayat Pembayaran -->
+  <div id="tab-riwayat-pembayaran" class="tab-content">
+    <h2>Riwayat Pembayaran Hari Ini</h2>
+    <% if (riwayatPembayaran && riwayatPembayaran.length > 0) { %>
+      <% riwayatPembayaran.forEach(r => { %>
+        <div class="riwayat-item">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div>
+              <strong>Meja <%= r.id_meja %> - <%= r.nama_pelanggan %></strong><br/>
+              <small>Kasir: <%= r.nama_kasir %></small><br/>
+              <small>Waktu Bayar: <%= new Date(r.waktu_bayar).toLocaleString('id-ID') %></small><br/>
+              <div style="margin: 10px 0;">
+                <%= r.menu_pesanan %>
+              </div>
+            </div>
+            <div class="total-harga">
+              Rp <%= r.harga_total.toLocaleString('id-ID') %>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <p>Belum ada riwayat pembayaran hari ini.</p>
+    <% } %>
+  </div>
+
+  <script src="/javascripts/kasir.js"></script>
+</body>
+</html>
