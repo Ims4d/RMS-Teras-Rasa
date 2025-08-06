@@ -68,9 +68,8 @@ router.post('/update-menupesanan', async (req, res) => {
 
 router.post('/add-menupesanan', async (req, res) => {
     const { id_pesanan, menu_pesanan, total_harga } = req.body;
-    const menu_pesanan_obj = JSON.parse(menu_pesanan);
-
-    const menuItems = Object.entries(menu_pesanan_obj);
+    const menuPesananObj = JSON.parse(menu_pesanan);
+    const menuItems = Object.entries(menuPesananObj);
 
     await Promise.all(
         menuItems.map(([id_menu, item]) =>

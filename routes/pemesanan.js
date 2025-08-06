@@ -16,7 +16,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const { nama_pelanggan, id_meja, menu_pesanan, total_harga } = req.body;
-    const menu_pesanan_obj = JSON.parse(menu_pesanan);
+    const menuPesananObj = JSON.parse(menu_pesanan);
+    const menuItems = Object.entries(menuPesananObj);
 
     await updateMeja(id_meja);
 
@@ -32,7 +33,7 @@ router.post('/', async (req, res) => {
     res.render('pemesanan', {
         done: true,
         nama_pelanggan,
-        pesanan: Object.values(menu_pesanan_obj),
+        pesanan: Object.values(menuPesananObj),
         total_harga,
     });
 });
