@@ -10,8 +10,16 @@ import {
 const router = Router();
 
 router.get('/', async (req, res) => {
+    if (!req.query.idm) {
+        res.render('peringatan', {
+            title: "Peringatan",
+            message: "URL tidak valid!"
+        });
+        return;
+    }
+
     const menu = await getMenu();
-    res.render('pemesanan', { id_meja: req.query.idm, menu });
+    res.render('pemesanan', { title: "Pemesanan", id_meja: req.query.idm, menu });
 });
 
 router.post('/', async (req, res) => {
@@ -31,6 +39,7 @@ router.post('/', async (req, res) => {
     );
 
     res.render('pemesanan', {
+        title: "Pemesanan",
         done: true,
         nama_pelanggan,
         pesanan: Object.values(menuPesananObj),

@@ -8,7 +8,7 @@ import {
     insertRiwayatPembayaran,
     updateMeja,
     updateWaktuBayar,
-    deletePesanan
+    deletePelanggan
 } from '../../queries/kasirQueries.js';
 
 const router = Router();
@@ -61,7 +61,7 @@ router.post('/proses-pembayaran', async (req, res) => {
     await updateWaktuBayar(id_pesanan);
     await updateMeja(id_meja);
     await insertRiwayatPembayaran(riwayatData);
-    await deletePesanan(id_pesanan);
+    await deletePelanggan(id_pelanggan);
 
     res.sendStatus(200);
 });

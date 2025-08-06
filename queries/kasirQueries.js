@@ -93,11 +93,11 @@ const updateWaktuBayar = (id_pesanan) =>
         );
     });
 
-const deletePesanan = (id_pesanan) =>
+const deletePelanggan = (id_pelanggan) =>
     new Promise((resolve, reject) => {
         connection.query(
-            'DELETE FROM pesanan WHERE id_pesanan = ?',
-            [id_pesanan],
+            'DELETE FROM pelanggan WHERE id_pelanggan = ?',
+            [id_pelanggan],
             (err, results) => {
                 if (err) return reject(err);
                 resolve(results);
@@ -114,5 +114,5 @@ export {
     insertRiwayatPembayaran,
     updateMeja,
     updateWaktuBayar,
-    deletePesanan
+    deletePelanggan
 }

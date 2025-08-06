@@ -1,347 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
   <head>
-    <title>Pemesanan</title>
+    <title><%= title %></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-      :root {
-        --primary: #007bff;
-        --primary-dark: #0056b3;
-        --success: #28a745;
-        --gray: #6c757d;
-        --bg-light: #f8f9fa;
-        --border: #dee2e6;
-        --radius: 8px;
-        --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        --transition: 0.3s ease;
-      }
-      body {
-        font-family: 'Segoe UI', sans-serif;
-        background-color: #f4f6f8;
-        margin: 0;
-        padding: 20px;
-        color: #333;
-      }
-      /* Tab Content */
-      .tab-content {
-        display: none;
-        padding: 20px 0;
-      }
-      .tab-content.active {
-        display: block;
-      }
-      /* Menu Item */
-      .menu-item {
-        border: 1px solid var(--border);
-        padding: 16px;
-        margin-bottom: 15px;
-        border-radius: var(--radius);
-        background: white;
-        transition: var(--transition);
-        display: flex;
-        gap: 16px;
-        box-shadow: var(--shadow);
-      }
-      .menu-item:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-      }
-      .menu-image {
-        width: 80px;
-        height: 80px;
-        border-radius: var(--radius);
-        object-fit: cover;
-        flex-shrink: 0;
-        border: 2px solid #eee;
-      }
-      .menu-content {
-        flex: 1;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .menu-info div:first-child {
-        font-weight: 600;
-        font-size: 18px;
-        margin-bottom: 4px;
-      }
-      .menu-info div:nth-child(2) {
-        color: #666;
-      }
-      .menu-info div:last-child {
-        color: #aaa;
-        font-size: 13px;
-      }
-      /* Button Add to Cart */
-      .add-to-cart {
-        background-color: var(--success);
-        color: white;
-        border: none;
-        padding: 10px 16px;
-        border-radius: var(--radius);
-        cursor: pointer;
-        transition: var(--transition);
-      }
-      .add-to-cart:hover {
-        background-color: #218838;
-      }
-      .add-to-cart:disabled {
-        background-color: var(--gray);
-        cursor: not-allowed;
-      }
-      /* Order Item Summary */
-      .order-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px;
-        border: 1px solid var(--border);
-        margin: 10px 0;
-        border-radius: var(--radius);
-        background: white;
-      }
-      /* Quantity Control */
-      .quantity-controls {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .quantity-controls button {
-        width: 32px;
-        height: 32px;
-        background: white;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: var(--transition);
-      }
-      .quantity-controls button:hover {
-        background: var(--bg-light);
-        border-color: var(--primary);
-      }
-      .quantity-display {
-        min-width: 30px;
-        text-align: center;
-        font-weight: bold;
-      }
-      /* Action Buttons */
-      .action-buttons {
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-        margin-top: 30px;
-        padding-top: 20px;
-        border-top: 2px solid #eee;
-      }
-      /* Primary Button */
-      .btn-primary {
-        background-color: var(--primary);
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        font-size: 16px;
-        border-radius: var(--radius);
-        cursor: pointer;
-        transition: var(--transition);
-      }
-      .btn-primary:hover {
-        background-color: var(--primary-dark);
-      }
-      .btn-primary:disabled {
-        background: var(--gray);
-        cursor: not-allowed;
-      }
-      /* Secondary Button */
-      .btn-secondary {
-        background-color: var(--gray);
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        font-size: 16px;
-        border-radius: var(--radius);
-        cursor: pointer;
-        transition: var(--transition);
-      }
-      .btn-secondary:hover {
-        background-color: #545b62;
-      }
-      /* Summary Section */
-      .summary-section {
-        background: var(--bg-light);
-        padding: 20px;
-        border-radius: var(--radius);
-        margin: 25px 0;
-      }
-      /* Total Price */
-      .total-price {
-        font-size: 24px;
-        font-weight: bold;
-        color: var(--success);
-        text-align: center;
-        margin-top: 20px;
-      }
-      /* Welcome Section */
-      .welcome-section {
-        text-align: center;
-        padding: 40px 20px;
-      }
-      .welcome-section h2 {
-        color: var(--primary);
-        margin-bottom: 10px;
-      }
-      .welcome-section h4 {
-        color: #555;
-        margin-bottom: 16px;
-      }
-      .welcome-section input {
-        padding: 14px 20px;
-        font-size: 18px;
-        border: 2px solid #ddd;
-        border-radius: var(--radius);
-        width: 100%;
-        max-width: 400px;
-        margin-top: 10px;
-      }
-      .welcome-section input:focus {
-        outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-      }
-      /* Success Message */
-      .success-message {
-        text-align: center;
-        padding: 40px 20px;
-      }
-      .success-message h2 {
-        color: var(--success);
-        margin-bottom: 20px;
-      }
-      /* Order Summary List */
-      .order-summary-list {
-        background: var(--bg-light);
-        padding: 20px;
-        border-radius: var(--radius);
-        margin: 20px 0;
-      }
-      .order-summary-list ul {
-        list-style: none;
-        padding: 0;
-      }
-      .order-summary-list li {
-        padding: 12px 10px;
-        border-bottom: 1px solid var(--border);
-        font-size: 16px;
-      }
-      .order-summary-list li:last-child {
-        border-bottom: none;
-      }
-      /* Responsive */
-      @media (max-width: 768px) {
-        .menu-item {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-        .menu-content {
-          flex-direction: column;
-          gap: 10px;
-          align-items: flex-start;
-        }
-        .action-buttons {
-          flex-direction: column;
-        }
-      }
+      @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+      body { font-family: "Quicksand", sans-serif }
     </style>
   </head>
-  <body>
-    <% if (typeof done !== 'undefined' && done) { %>
-    <div class="success-message">
+
+  <% if (typeof done !== 'undefined' && done) { %>
+  <body class="container py-4 bg-light">
+    <div class="text-center">
       <h2>Terima kasih, <%= nama_pelanggan %>!</h2>
       <p>Pesanan Anda telah kami terima. Anda memesan:</p>
-      <div class="order-summary-list">
-        <ul>
-          <% pesanan.forEach(item => { %>
-          <li>
-            <%= item.nama_menu %> - Rp <%= item.harga %> x <%= item.jumlah %> = Rp <%= item.sub_total %>
-          </li>
-          <% }) %>
-        </ul>
-      </div>
-      <div class="total-price">Total Harga: Rp <%= total_harga %></div>
     </div>
-    <% } else { %>
-    <form id="order-form" action="/pemesanan" method="POST">
+    <ul class="list-group mb-3">
+      <% pesanan.forEach(item => { %>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div><%= item.nama_menu %><br>Rp <%= item.harga %> x <%= item.jumlah %></div>
+        <strong>Rp <%= item.sub_total %></strong>
+      </li>
+      <% }) %>
+    </ul>
+    <div class="text-end fw-bold">Total Harga: Rp <%= total_harga %></div>
+  </body>
+  <% } else { %>
+  <body class="container py-4 bg-light">
+    <form action="/pemesanan" method="POST">
       <input type="hidden" name="id_meja" value="<%= id_meja %>" />
       <input type="hidden" name="menu_pesanan" id="menu-pesanan" />
       <input type="hidden" name="total_harga" id="total-harga" />
-      <!-- Tab Nama Pelanggan -->
-      <div id="content-nama" class="tab-content active">
-        <div class="welcome-section">
-          <h2>Selamat Datang!</h2>
-          <h4>Masukkan Nama Anda</h4>
-          <input
-            type="text"
-            name="nama_pelanggan"
-            id="input-name"
-            placeholder="Masukkan nama Anda..."
-            autocomplete="off"
-            />
+
+      <!-- Step Nama -->
+      <div class="form-step">
+        <div class="text-center mb-4">
+          <h1>Selamat Datang</h1>
+          <h2>di Resto UNIKOM</h2>
+          <p class="badge text-bg-warning">Anda duduk di meja No. <%= id_meja %></p>
+          <p>Masukkan nama Anda sebelum memesan.</p>
+        </div>
+        <div class="mb-3">
+          <label for="input-name" class="form-label"><strong>Nama Anda</strong></label>
+          <input type="text" class="form-control" id="input-name" name="nama_pelanggan" placeholder="Masukkan nama Anda" required>
         </div>
       </div>
-      <!-- Tab Pilih Menu -->
-      <div id="content-menu" class="tab-content">
-        <h2>Pilih Menu Pesanan</h2>
-        <div id="menu-list">
+
+      <!-- Step Menu -->
+      <div class="form-step d-none">
+        <h3 class="mb-3">Pilih Menu</h3>
+        <div class="row g-3">
           <% menu.forEach(({ id_menu, nama_menu, harga, jenis_menu }) => { %>
-          <div class="menu-item">
-            <img
-              src="/img/menu/<%= id_menu %>.jpg"
-              alt="<%= nama_menu %>"
-              class="menu-image"
-              />
-            <div class="menu-content">
-              <div class="menu-info">
-                <div style="font-weight: bold; font-size: 18px;"><%= nama_menu %></div>
-                <div style="color: #666; margin: 5px 0;">Harga: Rp <%= harga.toLocaleString('id-ID') %></div>
-                <div style="color: #888; font-size: 14px;"><%= jenis_menu %></div>
-              </div>
-              <button
-                type="button"
-                class="add-to-cart"
-                data-id="<%= id_menu %>"
-                data-nama="<%= nama_menu %>"
-                data-harga="<%= harga %>"
-                >
-              Tambah
-              </button>
+          <div class="col-12 d-flex align-items-center border rounded p-2 bg-white">
+            <img src="/img/menu/<%= id_menu %>.jpg" alt="<%= nama_menu %>" class="img-fluid rounded" style="max-width: 100px;">
+            <div class="ms-3 flex-grow-1">
+              <div class="fw-bold"><%= nama_menu %></div>
+              <div class="text-muted small"><% if (jenis_menu === 'MAKANAN'){ %> Makanan <% } else { %> Minuman <% } %><br>Rp <%= harga.toLocaleString('id-ID') %></div>
             </div>
+            <button type="button" class="btn btn-primary add-to-cart" data-id="<%= id_menu %>" data-nama="<%= nama_menu %>" data-harga="<%= harga %>">
+              Tambah
+            </button>
           </div>
           <% }) %>
         </div>
-        <div class="summary-section">
-          <h3>Pesanan Anda</h3>
-          <div id="order-summary">Belum ada pesanan.</div>
-        </div>
+        <hr class="my-4">
+        <h4>Pesanan Anda</h4>
+        <div id="order-summary" class="border rounded p-3 bg-light">Belum ada pesanan.</div>
       </div>
-      <!-- Tab Konfirmasi -->
-      <div id="content-konfirmasi" class="tab-content">
-        <h2>Konfirmasi Pemesanan</h2>
-        <div class="summary-section">
-          <div id="final-menu-list"></div>
-          <div class="total-price">Total Harga: Rp <span id="total-price">0</span></div>
-        </div>
+
+      <!-- Step Konfirmasi -->
+      <div class="form-step d-none">
+        <h3 class="mb-3">Konfirmasi Pesanan</h3>
+        <div id="final-menu-list" class="mb-3"></div>
+        <h5>Total Harga: Rp <span id="total-price">0</span></h5>
       </div>
-      <!-- Action Buttons -->
-      <div class="action-buttons">
-        <button type="button" id="prev-btn" class="btn-secondary" onclick="previousTab()" style="display: none;">
-        Kembali
+
+      <!-- Buttons -->
+      <div class="action-buttons d-flex justify-content-between mt-4">
+        <button type="button" id="prev-btn" class="btn btn-secondary invisible">
+          <i class="bi bi-arrow-left"></i> Kembali
         </button>
-        <button type="button" id="next-btn" class="btn-primary" onclick="nextTab()" disabled>
-        Lanjutkan
-        </button>
+        <button type="button" id="next-btn" class="btn btn-primary"></button>
       </div>
     </form>
-    <% } %>
-    <script src="/javascripts/pemesanan.js">
-    </script>
+
+    <script src="/javascripts/pemesanan.js"></script>
   </body>
+  <% } %>
 </html>

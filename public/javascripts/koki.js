@@ -1,12 +1,3 @@
-function showTab(tabId) {
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
-
-    document.getElementById(tabId).classList.add('active');
-    document.getElementById('btn-' + tabId.replace('tab-', '')).classList.add('active');
-}
-
-window.addEventListener('DOMContentLoaded', () => showTab('tab-antrian'));
 
 async function updateStatus(id_pesanan, id_koki, status) {
     try {
