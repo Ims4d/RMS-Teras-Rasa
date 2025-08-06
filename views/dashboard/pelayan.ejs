@@ -3,26 +3,117 @@
 <head>
   <title><%= title %></title>
   <style>
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-    .tabs button { margin-right: 10px; padding: 10px 15px; cursor: pointer; }
-    .tabs button.active { background-color: #007bff; color: white; }
-    .column { float: left; width: 45%; margin-right: 5%; }
-    .row::after { content: ""; display: table; clear: both; }
-    .stats-container { display: flex; gap: 30px; margin-bottom: 20px; }
-    .stat-box { text-align: center; padding: 15px; border: 1px solid #ddd; border-radius: 8px; min-width: 120px; }
-    .pesanan-item { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 8px; background-color: #f9f9f9; }
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.5);
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
+    body {
+      background-color: #F9FAFB;
+      font-family: "Quicksand", sans-serif;
     }
+
+.tab-content {
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.tabs button {
+  margin-right: 10px;
+  padding: 10px 15px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.tabs button:hover {
+  color: #333;
+}
+
+.tabs button.active {
+  color: orange;
+  border-bottom: 3px solid orange;
+  background-color: transparent;
+}
+
+/* Statistik */
+.stats-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.stat-box {
+  flex: 1;
+  text-align: center;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  min-width: 120px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+
+.stat-box:hover {
+  transform: translateY(-3px);
+}
+
+.pesanan-item {
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  margin: 12px 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s ease-in-out;
+  position: relative;
+}
+
+.pesanan-item:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border-color: #ffa726;
+  transform: translateY(-2px);
+}
+
+.pesanan-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: orange;
+  border-radius: 12px 0 0 12px;
+}
+
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Animasi Fade In */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
     .modal-content {
       background-color: #fefefe;
       margin: 2% auto;
@@ -42,20 +133,137 @@
       cursor: pointer;
     }
     .close:hover { color: black; }
-    .menu-item {
-      border: 1px solid #ddd;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
-    }
-    .menu-item button {
-      background-color: #28a745;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 3px;
-      cursor: pointer;
-    }
+    
+    /* Container pesanan */
+.pesanan-item {
+  position: relative;
+  padding: 20px 20px 20px 16px;
+  margin: 14px 0;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #e6e8eb;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.pesanan-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.08);
+}
+
+/* Accent strip kiri */
+.pesanan-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(180deg, #ffb347, #ffcc33);
+  border-radius: 12px 0 0 12px;
+}
+
+/* Header meja dan total */
+.pesanan-item > h3 {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.pesanan-item > div:first-of-type {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  color: #555;
+  font-weight: 600;
+}
+
+/* Item menu di dalam pesanan */
+.pesanan-item .menu-entry {
+  border: 1px solid #d9dce0;
+  padding: 12px 14px;
+  margin: 8px 0;
+  border-radius: 10px;
+  background: #f9f9fb;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.pesanan-item .menu-entry strong {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 4px;
+  color: #1f2d3a;
+}
+
+/* Aksi tombol */
+.menu-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.menu-actions button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: filter 0.15s ease;
+}
+
+.btn-delete {
+  background: #ffe5e5;
+  color: #c0392b;
+}
+
+.btn-delete:hover {
+  filter: brightness(1.05);
+}
+
+.btn-change {
+  background: #e8f4ff;
+  color: #1565c0;
+}
+
+.btn-change:hover {
+  filter: brightness(1.05);
+}
+
+/* Sub total */
+.menu-entry div {
+  flex: 1 1 150px;
+  min-width: 120px;
+  color: #444;
+}
+
+/* Responsif kecil */
+@media (max-width: 800px) {
+  .pesanan-item {
+    padding: 16px 16px 16px 12px;
+  }
+
+  .menu-actions {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .menu-entry {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+
     .order-item {
       display: flex;
       justify-content: space-between;
@@ -91,17 +299,35 @@
       border-radius: 4px;
       cursor: pointer;
     }
+
+    .stat-box {
+      width: 200px;
+      height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: white;
+      margin: 20px 0;
+    }
+
+    .tabs button {
+      margin-right: 0;
+      border: 0;
+      background-color: white;
+    }
   </style>
 </head>
 <body>
+  <header style="background-color: white; max-width: 1200px; margin: auto;">
   <div style="display: flex; justify-content: space-between; align-items: center;">
     <h1><%= title %></h1>
     <form action="pelayan/logout" method="post">
       <button type="submit" style="padding: 10px 20px; background-color: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer;">Logout</button>
     </form>
   </div>
+  </header>
 
-  <div class="stats-container">
+  <div class="stats-container" style="display: flex; justify-content: space-between; max-width: 1200px; margin: auto;">
     <div class="stat-box">
       <strong>Meja Tersedia</strong><br/>
       <span style="font-size: 24px;"><%= meja.filter(p => p.status_meja === 'KOSONG').length %></span>
@@ -120,15 +346,15 @@
     </div>
   </div>
 
-  <div class="tabs">
-    <button onclick="showTab('tab-belum-dimasak')" id="btn-belum-dimasak">Belum Dimasak</button>
-    <button onclick="showTab('tab-sedang-dimasak')" id="btn-sedang-dimasak">Sedang Dimasak</button>
-    <button onclick="showTab('tab-menu-tidak-tersedia')" id="btn-menu-tidak-tersedia">Menu Tidak Tersedia</button>
-    <button onclick="showTab('tab-siap-disajikan')" id="btn-siap-disajikan">Siap Disajikan</button>
-  </div>
-
   <!-- Tab Belum Dimasak -->
-  <div id="tab-belum-dimasak" class="tab-content">
+  <main style="max-width: 1200px; margin: auto; background-color: white; padding-bottom: 50px; box-sizing: border-box;">
+    <div class="tabs">
+      <button onclick="showTab('tab-belum-dimasak')" id="btn-belum-dimasak" class="btn-tab">Belum Dimasak</button>
+      <button onclick="showTab('tab-sedang-dimasak')" id="btn-sedang-dimasak" class="btn-tab">Sedang Dimasak</button>
+      <button onclick="showTab('tab-menu-tidak-tersedia')" id="btn-menu-tidak-tersedia" class="btn-tab">Menu Tidak Tersedia</button>
+      <button onclick="showTab('tab-siap-disajikan')" id="btn-siap-disajikan" class="btn-tab">Siap Disajikan</button>
+      </div>
+    <div id="tab-belum-dimasak" class="tab-content" style="padding: 20px;">
     <h2>Belum Dimasak</h2>
     <% pesanan.filter(p => p.status_pesanan === 'BELUM_DIMASAK').forEach(p => { %>
       <div class="pesanan-item">
@@ -142,7 +368,7 @@
   </div>
 
   <!-- Tab Sedang Dimasak -->
-  <div id="tab-sedang-dimasak" class="tab-content">
+  <div id="tab-sedang-dimasak" class="tab-content" style="padding: 20px;">
     <h2>Sedang Dimasak</h2>
     <% pesanan.filter(p => p.status_pesanan === 'SEDANG_DIMASAK').forEach(p => { %>
       <div class="pesanan-item">
@@ -156,7 +382,7 @@
   </div>
 
   <!-- Tab Menu Tidak Tersedia -->
-  <div id="tab-menu-tidak-tersedia" class="tab-content">
+  <div id="tab-menu-tidak-tersedia" class="tab-content" style="padding: 0 20px;">
     <h2>Menu Tidak Tersedia</h2>
     <% const menuTidakTersedia = menuPesanan.filter(m => m.ketersediaan === 'TIDAK_TERSEDIA');
       const grouped = {};
@@ -187,7 +413,7 @@
   </div>
 
   <!-- Tab Siap Disajikan -->
-  <div id="tab-siap-disajikan" class="tab-content">
+  <div id="tab-siap-disajikan" class="tab-content" style="padding: 0 20px;">
     <h2>Siap Disajikan</h2>
     <% pesanan.filter(p => p.status_pesanan === 'SIAP_DISAJIKAN').forEach(p => { %>
       <div class="pesanan-item">
@@ -242,6 +468,7 @@
       </div>
     </div>
   </div>
+  </main>
 
   <script src="/javascripts/pelayan.js"></script>
 </body>
