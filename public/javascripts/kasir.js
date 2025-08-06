@@ -31,11 +31,12 @@ function cetakNota(id_pesanan) {
 }
 
 function pilihBayar(id_pesanan) {
-    document.querySelectorAll('.btn-bayar').forEach((btn) => {
-        btn.innerHTML = 'Pilih untuk Bayar';
-        btn.disabled = false;
+    document.querySelectorAll('.detail-pembayaran').forEach(e => e.style.display = 'none');
+    document.querySelectorAll('.btn-bayar').forEach(e => {
+        e.innerHTML = 'Pilih untuk Bayar';
+        e.disabled = false;
     });
-    document.querySelectorAll('.pesanan-item').forEach((item) => item.classList.remove('selected'));
+    document.querySelectorAll('.pesanan-item').forEach(e => e.classList.remove('selected'));
 
     const selectedBtn = document.getElementById(`btn-${id_pesanan}`);
     selectedBtn.innerHTML = 'Dipilih';
