@@ -29,6 +29,12 @@ nextBtnElm.addEventListener('click', () => {
         return;
     }
 
+    if (currentStep === 2 && Object.keys(order).length === 0) {
+        alert("Tidak ada menu yang dipilih.");
+        showStep(1);
+        return;
+    }
+
     if (currentStep < formSteps.length - 1) {
         currentStep++;
         renderFinalMenuList();
