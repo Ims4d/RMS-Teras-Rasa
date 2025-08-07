@@ -63,6 +63,12 @@ router.post('/proses-pembayaran', async (req, res) => {
     await insertRiwayatPembayaran(riwayatData);
     await deletePelanggan(id_pelanggan);
 
+    req.app.get('wss').clients.forEach(client => {
+        if (client.readyState === 1) {
+            client.send(JSON.stringify({ type: 'pembayaran_diproses' }));
+        }
+    });
+
     res.sendStatus(200);
 });
 

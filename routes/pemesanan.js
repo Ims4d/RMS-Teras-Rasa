@@ -39,6 +39,13 @@ router.post('/', async (req, res) => {
         )
     );
 
+    const wss = req.app.get('wss');
+    wss.clients.forEach(client => {
+        if (client.readyState === 1) {
+            client.send(JSON.stringify({ type: 'pesanan_baru' }));
+        }
+    });
+
     res.render('pemesanan', {
         title: "Pemesanan",
         done: true,

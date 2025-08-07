@@ -31,12 +31,26 @@ router.get('/', checkAuth, async (req, res) => {
 router.post('/update-status', async (req, res) => {
     const { id_pesanan, id_koki, status } = req.body;
     await updatePesanan(id_pesanan, id_koki, status);
+
+    req.app.get('wss').clients.forEach(client => {
+        if (client.readyState === 1) {
+            client.send(JSON.stringify({ type: 'update_status' }));
+        }
+    });
+
     res.sendStatus(200);
 });
 
 router.post('/update-ketersediaan', async (req, res) => {
     const { id_menu, id_pesanan, ketersediaan } = req.body;
     await updateMenuPesanan(id_menu, id_pesanan, ketersediaan);
+
+    req.app.get('wss').clients.forEach(client => {
+        if (client.readyState === 1) {
+            client.send(JSON.stringify({ type: 'update_ketersediaan' }));
+        }
+    });
+
     res.sendStatus(200);
 });
 
