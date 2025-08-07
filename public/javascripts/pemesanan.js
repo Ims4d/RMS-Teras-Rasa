@@ -11,7 +11,9 @@ const order = {};
 
 function showStep(index) {
     formSteps.forEach((step, i) => step.classList.toggle('d-none', i !== index));
-    prevBtnElm.classList.toggle('invisible', index === 0);
+    prevBtnElm.classList.toggle('d-none', index === 0);
+    prevBtnElm.classList.toggle('me-1', index !== 0);
+    nextBtnElm.classList.toggle('ms-1', index !== 0);
     nextBtnElm.innerHTML = index === formSteps.length - 1 ? 'Pesan Sekarang' : 'Lanjutkan <i class="bi bi-arrow-right"></i>';
 }
 
@@ -52,8 +54,8 @@ function updateOrderSummary() {
 
     orderSummaryElm.innerHTML = Object.values(order).map(item => `
     <div class="order-item d-flex justify-content-between">
-        <div><strong>${item.nama_menu}</strong><br><small>Rp ${item.harga} x ${item.jumlah}</small></div>
-        <strong>Rp ${item.sub_total}</strong>
+        <div><strong>${item.nama_menu}</strong><br><small>Rp ${item.harga.toLocaleString('id-ID')} x ${item.jumlah}</small></div>
+        <strong>Rp ${item.sub_total.toLocaleString('id-ID')}</strong>
     </div>`).join('');
 }
 

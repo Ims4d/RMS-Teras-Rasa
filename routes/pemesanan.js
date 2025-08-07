@@ -26,11 +26,12 @@ router.post('/', async (req, res) => {
     const { nama_pelanggan, id_meja, menu_pesanan, total_harga } = req.body;
     const menuPesananObj = JSON.parse(menu_pesanan);
     const menuItems = Object.entries(menuPesananObj);
+    const totalHargaInt = parseInt(total_harga);
 
     await updateMeja(id_meja);
 
     const id_pelanggan = await insertPelanggan(nama_pelanggan);
-    const id_pesanan = await insertPesanan(id_pelanggan, id_meja, total_harga);
+    const id_pesanan = await insertPesanan(id_pelanggan, id_meja, totalHargaInt);
 
     await Promise.all(
         menuItems.map(([id_menu, item]) =>
@@ -43,7 +44,7 @@ router.post('/', async (req, res) => {
         done: true,
         nama_pelanggan,
         pesanan: Object.values(menuPesananObj),
-        total_harga,
+        total_harga: totalHargaInt.toLocaleString('id-ID'),
     });
 });
 
