@@ -1,4 +1,13 @@
 
+const socket = new WebSocket(`ws://${window.location.host}`);
+
+socket.onmessage = event => {
+    const data = JSON.parse(event.data);
+    if (data.type === 'pesanan_baru' || data.type === 'update_status' || data.type === 'update_ketersediaan' || data.type === 'update_menu_pesanan' || data.type === 'delete_menu_pesanan' || data.type === 'pembayaran_diproses') {
+        setTimeout(() => location.reload(), 1000);
+    }
+};
+
 async function prosesPembayaran(id_pesanan, id_kasir, id_meja, id_pelanggan, total_harga, waktu_pesan) {
     try {
         const response = await fetch('kasir/proses-pembayaran', {
@@ -8,7 +17,6 @@ async function prosesPembayaran(id_pesanan, id_kasir, id_meja, id_pelanggan, tot
         });
         if (response.ok) {
             alert('Pembayaran berhasil diproses!');
-            location.reload();
         } else {
             alert('Gagal memproses pembayaran!');
         }

@@ -2,6 +2,7 @@
 
 import http from 'http';
 import debugLib from 'debug';
+import { WebSocketServer } from 'ws';
 import app from '../app.js';
 
 const debug = debugLib('test:server');
@@ -17,6 +18,15 @@ const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 const server = http.createServer(app);
+
+const wss = new WebSocketServer({ server });
+
+app.set('wss', wss);
+
+wss.on('connection', ws => {
+    console.log('WS Client connected');
+    ws.on('close', () => console.log('WS Client disconnected'));
+});
 
 server.listen(port);
 

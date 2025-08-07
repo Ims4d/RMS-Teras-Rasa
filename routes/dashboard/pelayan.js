@@ -41,6 +41,13 @@ router.get('/', checkAuth, async (req, res) => {
 router.post('/update-status', async (req, res) => {
     const { id_pesanan, id_pelayan, status } = req.body;
     await updateStatusPesanan(id_pesanan, id_pelayan, status);
+
+    req.app.get('wss').clients.forEach(client => {
+        if (client.readyState === 1) {
+            client.send(JSON.stringify({ type: 'update_status' }));
+        }
+    });
+
     res.sendStatus(200);
 });
 
@@ -51,6 +58,13 @@ router.post('/delete-menupesanan', async (req, res) => {
 
     const newTotal = await getTotalHargaMenuPesanan(id_pesanan);
     await updateTotalHargaPesanan(id_pesanan, newTotal);
+
+    req.app.get('wss').clients.forEach(client => {
+        if (client.readyState === 1) {
+            client.send(JSON.stringify({ type: 'delete_menu_pesanan' }));
+        }
+    });
+
     res.sendStatus(200);
 });
 
@@ -63,6 +77,13 @@ router.post('/update-menupesanan', async (req, res) => {
 
     const newTotal = await getTotalHargaMenuPesanan(id_pesanan);
     await updateTotalHargaPesanan(id_pesanan, newTotal);
+
+    req.app.get('wss').clients.forEach(client => {
+        if (client.readyState === 1) {
+            client.send(JSON.stringify({ type: 'update_menu_pesanan' }));
+        }
+    });
+
     res.sendStatus(200);
 });
 
@@ -78,6 +99,13 @@ router.post('/add-menupesanan', async (req, res) => {
     );
 
     await updateTotalHargaPesanan(id_pesanan, total_harga);
+
+    req.app.get('wss').clients.forEach(client => {
+        if (client.readyState === 1) {
+            client.send(JSON.stringify({ type: 'update_menu_pesanan' }));
+        }
+    });
+
     res.sendStatus(200);
 });
 
