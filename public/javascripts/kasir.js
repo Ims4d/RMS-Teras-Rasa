@@ -1,10 +1,9 @@
-
 const socket = new WebSocket(`ws://${window.location.host}`);
 
 socket.onmessage = event => {
     const data = JSON.parse(event.data);
     if (data.type === 'pesanan_baru' || data.type === 'update_status' || data.type === 'update_ketersediaan' || data.type === 'update_menu_pesanan' || data.type === 'delete_menu_pesanan' || data.type === 'pembayaran_diproses') {
-        setTimeout(() => location.reload(), 1000);
+        setTimeout(() => location.reload(), 500);
     }
 };
 
