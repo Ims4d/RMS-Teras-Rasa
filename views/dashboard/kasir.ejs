@@ -38,10 +38,10 @@
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" data-bs-toggle="tab" href="#proses-pembayaran"><i class="bi bi-justify me-1"> </i>Proses Pembayaran</a>
+          <a class="nav-link active" data-bs-toggle="tab" href="#proses-pembayaran">Proses Pembayaran</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" href="#riwayat-pembayaran"><i class="bi bi-clock me-1"></i> Riwayat Pembayaran</a>
+          <a class="nav-link" data-bs-toggle="tab" href="#riwayat-pembayaran">Riwayat Pembayaran</a>
         </li>
       </ul>
     </div>
@@ -95,13 +95,9 @@
                   <strong>Total:</strong>
                   <strong>Rp <%= p.total_harga.toLocaleString('id-ID') %></strong>
                 </div>
-                <div class="row">
-                  <div class="col pe-1">
-                    <button class="btn btn-primary w-100" onclick="prosesPembayaran('<%= p.id_pesanan %>', '<%= id_kasir %>', '<%= p.id_meja %>', '<%= p.id_pelanggan %>', '<%= p.total_harga %>', '<%= p.waktu_pesan %>')">Proses Pembayaran</button>
-                  </div>
-                  <div class="col ps-1">
-                    <button class="btn btn-warning w-100" onclick="cetakNota('<%= p.id_pesanan %>')">Cetak Nota</button>
-                  </div>
+                <div class="d-flex justify-content-center align-items-center">
+                  <button class="btn btn-primary w-100 me-1" onclick="prosesPembayaran('<%= p.id_pesanan %>', '<%= id_kasir %>', '<%= p.id_meja %>', '<%= p.id_pelanggan %>', '<%= p.total_harga %>', '<%= p.waktu_pesan %>')">Proses Pembayaran</button>
+                  <button class="btn btn-warning w-100 ms-1" onclick="cetakNota('<%= p.id_pesanan %>')">Cetak Nota</button>
                 </div>
               </div>
             <% }) %>

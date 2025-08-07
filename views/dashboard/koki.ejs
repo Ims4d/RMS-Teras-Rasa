@@ -26,15 +26,15 @@
       <!-- Stat card -->
       <div class="row mb-4">
         <div class="col d-flex align-items-center border rounded p-2 mx-2 bg-white">
-          <h5 class="flex-grow-1 m-0">Pesanan Baru <i class="bi bi-cup-straw me-2"></i></h5>
+          <h5 class="flex-grow-1 m-0">Pesanan Baru</h5>
           <h1 class="text-success m-0"><%= pesanan.filter(p => p.status_pesanan === 'BELUM_DIMASAK').length %></h1>
         </div>
         <div class="col d-flex align-items-center border rounded p-2 mx-2 bg-white">
-          <h5 class="flex-grow-1 m-0">Sedang Dimasak <i class="bi bi-fire me-2"></i></h5>
+          <h5 class="flex-grow-1 m-0">Sedang Dimasak</h5>
           <h1 class="text-danger m-0"><%= pesanan.filter(p => p.status_pesanan === 'SEDANG_DIMASAK').length %></h1>
         </div>
         <div class="col d-flex align-items-center border rounded p-2 mx-2 bg-white">
-          <h5 class="flex-grow-1 m-0">Siap Disajikan <i class="bi bi-check-lg me-2"></i></h5>
+          <h5 class="flex-grow-1 m-0">Siap Disajikan</h5>
           <h1 class="text-success m-0"><%= pesanan.filter(p => p.status_pesanan === 'SIAP_DISAJIKAN').length %></h1>
         </div>
       </div>
@@ -42,17 +42,16 @@
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" data-bs-toggle="tab" href="#antrian"><i class="bi bi-clock me-1"></i> Antrian Pesanan</a>
+          <a class="nav-link active" data-bs-toggle="tab" href="#antrian">Antrian Pesanan</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" href="#ketersediaan"><i class="bi bi-list-check me-1"></i> Kelola Ketersediaan</a>
+          <a class="nav-link" data-bs-toggle="tab" href="#ketersediaan">Kelola Ketersediaan</a>
         </li>
       </ul>
     </div>
 
     <!-- Tab panes -->
     <div class="tab-content">
-
       <div id="antrian" class="container tab-pane active"><br>
         <div class="row">
           <!-- Kolom antrian pesanan baru -->

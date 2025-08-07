@@ -72,7 +72,7 @@
                 <h4>Meja <%= p.id_meja %></h4>
                 <%- menuPesanan.filter(m => m.id_pesanan === p.id_pesanan && m.ketersediaan !== 'TIDAK_TERSEDIA').map(m => `${m.jumlah}x ${m.nama_menu}`).join('<br>') %>
               </div>
-              <h5>Total: Rp <%= p.total_harga.toLocaleString('id-ID') %></h5>
+              <h5 class="m-0">Total: Rp <%= p.total_harga.toLocaleString('id-ID') %></h5>
             </div>
           </div>
         <% }) %>
@@ -88,7 +88,7 @@
                 <h4>Meja <%= p.id_meja %></h4>
                 <%- menuPesanan.filter(m => m.id_pesanan === p.id_pesanan).map(m => `${m.jumlah}x ${m.nama_menu}`).join('<br>') %>
               </div>
-              <h5>Total: Rp <%= p.total_harga.toLocaleString('id-ID') %></h5>
+              <h5 class="m-0">Total: Rp <%= p.total_harga.toLocaleString('id-ID') %></h5>
             </div>
           </div>
         <% }) %>

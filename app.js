@@ -12,6 +12,7 @@ import loginRouter from './routes/login.js';
 import dashboardKokiRouter from './routes/dashboard/koki.js';
 import dashboardPelayanRouter from './routes/dashboard/pelayan.js';
 import dashboardKasirRouter from './routes/dashboard/kasir.js';
+import dashboardAdminRouter from './routes/dashboard/admin.js';
 
 import pemesananRouter from './routes/pemesanan.js';
 
@@ -43,6 +44,7 @@ app.use('/login', loginRouter);
 app.use('/dashboard/koki', dashboardKokiRouter);
 app.use('/dashboard/pelayan', dashboardPelayanRouter);
 app.use('/dashboard/kasir', dashboardKasirRouter);
+app.use('/dashboard/admin', dashboardAdminRouter);
 
 app.use('/pemesanan', pemesananRouter);
 
