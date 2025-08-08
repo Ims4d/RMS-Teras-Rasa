@@ -30,7 +30,7 @@
   </body>
   <% } else { %>
   <body class="container py-4 bg-light">
-    <form action="/pemesanan" method="POST">
+    <form action="/pemesanan" method="POST" id="form-pemesanan">
       <input type="hidden" name="id_meja" value="<%= id_meja %>" />
       <input type="hidden" name="menu_pesanan" id="menu-pesanan" />
       <input type="hidden" name="total_harga" id="total-harga" />

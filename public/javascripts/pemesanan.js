@@ -152,4 +152,10 @@ document.querySelectorAll(".add-to-cart").forEach(btn => {
     });
 });
 
+document.getElementById('form-pemesanan').addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault();
+    }
+});
+
 showStep(currentStep);

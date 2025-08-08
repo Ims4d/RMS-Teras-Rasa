@@ -96,11 +96,11 @@ const getKoki = () =>
         });
     });
 
-const updateKoki = (id_koki, nama_koki) =>
+const updateKoki = (id_koki, nama_koki, username, password) =>
     new Promise((resolve, reject) => {
         connection.query(
-            'UPDATE koki SET nama_koki = ? WHERE id_koki = ?',
-            [nama_koki, id_koki],
+            'UPDATE koki SET nama_koki = ?, username = ?, password = ? WHERE id_koki = ?',
+            [nama_koki, username, password, id_koki],
             (err, results) => {
                 if (err) return reject(err);
                 resolve(results);
@@ -108,11 +108,11 @@ const updateKoki = (id_koki, nama_koki) =>
         );
     });
 
-const insertKoki = (nama_koki) =>
+const insertKoki = (nama_koki, username, password) =>
     new Promise((resolve, reject) => {
         connection.query(
-            'INSERT INTO koki (nama_koki) VALUES (?)',
-            [nama_koki],
+            'INSERT INTO koki (nama_koki, username, password) VALUES (?, ?, ?)',
+            [nama_koki, username, password],
             (error, results) => {
                 if (error) return reject(error);
                 resolve(results.insertId);
@@ -140,11 +140,11 @@ const getPelayan = () =>
         });
     });
 
-const updatePelayan = (id_pelayan, nama_pelayan) =>
+const updatePelayan = (id_pelayan, nama_pelayan, username, password) =>
     new Promise((resolve, reject) => {
         connection.query(
-            'UPDATE pelayan SET nama_pelayan = ? WHERE id_pelayan = ?',
-            [nama_pelayan, id_pelayan],
+            'UPDATE pelayan SET nama_pelayan = ?, username = ?, password = ? WHERE id_pelayan = ?',
+            [nama_pelayan, username, password, id_pelayan],
             (err, results) => {
                 if (err) return reject(err);
                 resolve(results);
@@ -152,11 +152,11 @@ const updatePelayan = (id_pelayan, nama_pelayan) =>
         );
     });
 
-const insertPelayan = (nama_pelayan) =>
+const insertPelayan = (nama_pelayan, username, password) =>
     new Promise((resolve, reject) => {
         connection.query(
-            'INSERT INTO pelayan (nama_pelayan) VALUES (?)',
-            [nama_pelayan],
+            'INSERT INTO pelayan (nama_pelayan, username, password) VALUES (?, ?, ?)',
+            [nama_pelayan, username, password],
             (error, results) => {
                 if (error) return reject(error);
                 resolve(results.insertId);
@@ -184,11 +184,11 @@ const getKasir = () =>
         });
     });
 
-const updateKasir = (id_kasir, nama_kasir) =>
+const updateKasir = (id_kasir, nama_kasir, username, password) =>
     new Promise((resolve, reject) => {
         connection.query(
-            'UPDATE kasir SET nama_kasir = ? WHERE id_kasir = ?',
-            [nama_kasir, id_kasir],
+            'UPDATE kasir SET nama_kasir = ?, username = ?, password ? WHERE id_kasir = ?',
+            [nama_kasir, username, password, id_kasir],
             (err, results) => {
                 if (err) return reject(err);
                 resolve(results);
@@ -196,11 +196,11 @@ const updateKasir = (id_kasir, nama_kasir) =>
         );
     });
 
-const insertKasir = (nama_kasir) =>
+const insertKasir = (nama_kasir, username, password) =>
     new Promise((resolve, reject) => {
         connection.query(
-            'INSERT INTO kasir (nama_kasir) VALUES (?)',
-            [nama_kasir],
+            'INSERT INTO kasir (nama_kasir, username, password) VALUES (?, ?, ?)',
+            [nama_kasir, username, password],
             (error, results) => {
                 if (error) return reject(error);
                 resolve(results.insertId);
@@ -219,3 +219,100 @@ const deleteKasir = (id_kasir) =>
             }
         );
     });
+
+const getAdmin = () =>
+    new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM admin', (error, results) => {
+            if (error) return reject(error);
+            resolve(results);
+        });
+    });
+
+const updateAdmin = (id_admin, nama_admin, username, password) =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            'UPDATE admin SET nama_admin = ?, username = ?, password = ? WHERE id_admin = ?',
+            [id_admin, nama_admin, username, password, id_admin],
+            (err, results) => {
+                if (err) return reject(err);
+                resolve(results);
+            }
+        );
+    });
+
+const insertAdmin = (nama_admin, username, password) =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            'INSERT INTO admin (nama_admin, username, password) VALUES (?, ?, ?)',
+            [nama_admin, username, password],
+            (error, results) => {
+                if (error) return reject(error);
+                resolve(results.insertId);
+            }
+        );
+    });
+
+const deleteAdmin = (id_admin) =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            'DELETE FROM admin WHERE id_admin = ?',
+            [id_admin],
+            (error, results) => {
+                if (error) return reject(error);
+                resolve(results);
+            }
+        );
+    });
+
+const getRiwayatPembayaran = () =>
+    new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM riwayat_pesanan', (error, results) => {
+            if (error) return reject(error);
+            resolve(results);
+        });
+    });
+
+const getRiwayatPembayaranHariIni = () =>
+    new Promise((resolve, reject) => {
+        const today = new Date();
+        const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+
+        connection.query(
+            'SELECT * FROM riwayat_pesanan WHERE waktu_bayar >= ? AND waktu_bayar < ? ORDER BY waktu_bayar DESC',
+            [startOfDay, endOfDay],
+            (error, results) => {
+                if (error) return reject(error);
+                resolve(results);
+            }
+        );
+    });
+
+export {
+    getMenu,
+    updateMenu,
+    insertMenu,
+    deleteMenu,
+    getMeja,
+    updateMeja,
+    insertMeja,
+    deleteMeja,
+    getKoki,
+    updateKoki,
+    insertKoki,
+    deleteKoki,
+    getPelayan,
+    updatePelayan,
+    insertPelayan,
+    deletePelayan,
+    getKasir,
+    updateKasir,
+    insertKasir,
+    deleteKasir,
+    getAdmin,
+    updateAdmin,
+    insertAdmin,
+    deleteAdmin,
+    getRiwayatPembayaran,
+    getRiwayatPembayaranHariIni
+}
