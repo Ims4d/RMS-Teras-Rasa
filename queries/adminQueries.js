@@ -88,4 +88,134 @@ const deleteMeja = (id_meja) =>
         );
     });
 
-export { getMenuPesanan, getPesanan, updateMenuPesanan, updatePesanan };
+const getKoki = () =>
+    new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM koki', (error, results) => {
+            if (error) return reject(error);
+            resolve(results);
+        });
+    });
+
+const updateKoki = (id_koki, nama_koki) =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            'UPDATE koki SET nama_koki = ? WHERE id_koki = ?',
+            [nama_koki, id_koki],
+            (err, results) => {
+                if (err) return reject(err);
+                resolve(results);
+            }
+        );
+    });
+
+const insertKoki = (nama_koki) =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            'INSERT INTO koki (nama_koki) VALUES (?)',
+            [nama_koki],
+            (error, results) => {
+                if (error) return reject(error);
+                resolve(results.insertId);
+            }
+        );
+    });
+
+const deleteKoki = (id_koki) =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            'DELETE FROM koki WHERE id_koki = ?',
+            [id_koki],
+            (error, results) => {
+                if (error) return reject(error);
+                resolve(results);
+            }
+        );
+    });
+
+const getPelayan = () =>
+    new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM pelayan', (error, results) => {
+            if (error) return reject(error);
+            resolve(results);
+        });
+    });
+
+const updatePelayan = (id_pelayan, nama_pelayan) =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            'UPDATE pelayan SET nama_pelayan = ? WHERE id_pelayan = ?',
+            [nama_pelayan, id_pelayan],
+            (err, results) => {
+                if (err) return reject(err);
+                resolve(results);
+            }
+        );
+    });
+
+const insertPelayan = (nama_pelayan) =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            'INSERT INTO pelayan (nama_pelayan) VALUES (?)',
+            [nama_pelayan],
+            (error, results) => {
+                if (error) return reject(error);
+                resolve(results.insertId);
+            }
+        );
+    });
+
+const deletePelayan = (id_pelayan) =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            'DELETE FROM pelayan WHERE id_pelayan = ?',
+            [id_pelayan],
+            (error, results) => {
+                if (error) return reject(error);
+                resolve(results);
+            }
+        );
+    });
+
+const getKasir = () =>
+    new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM kasir', (error, results) => {
+            if (error) return reject(error);
+            resolve(results);
+        });
+    });
+
+const updateKasir = (id_kasir, nama_kasir) =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            'UPDATE kasir SET nama_kasir = ? WHERE id_kasir = ?',
+            [nama_kasir, id_kasir],
+            (err, results) => {
+                if (err) return reject(err);
+                resolve(results);
+            }
+        );
+    });
+
+const insertKasir = (nama_kasir) =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            'INSERT INTO kasir (nama_kasir) VALUES (?)',
+            [nama_kasir],
+            (error, results) => {
+                if (error) return reject(error);
+                resolve(results.insertId);
+            }
+        );
+    });
+
+const deleteKasir = (id_kasir) =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            'DELETE FROM kasir WHERE id_kasir = ?',
+            [id_kasir],
+            (error, results) => {
+                if (error) return reject(error);
+                resolve(results);
+            }
+        );
+    });

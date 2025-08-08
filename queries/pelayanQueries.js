@@ -32,18 +32,6 @@ const getPesanan = () =>
         });
     });
 
-const insertMenuPesanan = (id_menu, id_pesanan, nama_menu, jumlah, sub_total) =>
-    new Promise((resolve, reject) => {
-        connection.query(
-            'INSERT INTO menu_pesanan (id_menu, id_pesanan, nama_menu, jumlah, sub_total) VALUES (?, ?, ?, ?, ?)',
-            [id_menu, id_pesanan, nama_menu, jumlah, sub_total],
-            (error, results) => {
-                if (error) return reject(error);
-                resolve(results);
-            }
-        );
-    });
-
 const deleteMenuPesanan = (id_menu, id_pesanan) =>
     new Promise((resolve, reject) => {
         connection.query(
@@ -110,7 +98,6 @@ export {
     getMenuPesanan,
     getPesanan,
     getTotalHargaMenuPesanan,
-    insertMenuPesanan,
     updateMenuPesanan,
     updateStatusPesanan,
     updateTotalHargaPesanan,

@@ -2,8 +2,13 @@ const socket = new WebSocket(`ws://${window.location.host}`);
 
 socket.onmessage = event => {
     const data = JSON.parse(event.data);
-    if (data.type === 'pesanan_baru' || data.type === 'update_status' || data.type === 'update_ketersediaan' || data.type === 'update_menu_pesanan' || data.type === 'delete_menu_pesanan' || data.type === 'pembayaran_diproses') {
-        setTimeout(() => location.reload(), 500);
+    if (
+        data.type === 'pesanan_baru' ||
+        data.type === 'koki_update_status' ||
+        data.type === 'koki_update_ketersediaan' ||
+        data.type === 'kasir_proses_pembayaran'
+    ) {
+        location.reload();
     }
 };
 
@@ -115,6 +120,7 @@ async function confirmChangeMenu() {
         if (response.ok) {
             alert('Menu berhasil diganti!');
             closeChangeMenuModal();
+            location.reload();
         } else {
             alert('Gagal mengganti menu');
         }
@@ -130,7 +136,9 @@ async function updateStatusPesanan(id_pesanan, id_pelayan, status) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id_pesanan, id_pelayan, status }),
         });
-        if (!response.ok) {
+        if (response.ok) {
+            location.reload();
+        } else {
             alert('Gagal mengupdate status');
         }
     } catch (error) {
@@ -148,7 +156,10 @@ async function deleteMenuPesanan(id_menu, id_pesanan) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id_menu, id_pesanan }),
         });
-        if (!response.ok) {
+        if (response.ok) {
+            alert('Menu berhasil dihapus!');
+            location.reload();
+        } else {
             alert('Gagal menghapus menu');
         }
     } catch (error) {

@@ -10,10 +10,24 @@ router.get('/', (_req, res) => {
 router.post('/', (req, res, next) => {
     const { username, password, role } = req.body;
 
-    if (!username || !password || !role) {
+    if (!username) {
         return res.render('login', {
             title: 'Login Karyawan',
-            error: 'Semua field wajib diisi.'
+            error: 'Masukkan username!'
+        });
+    }
+
+    if (!password) {
+        return res.render('login', {
+            title: 'Login Karyawan',
+            error: 'Masukkan password!'
+        });
+    }
+
+    if (!role) {
+        return res.render('login', {
+            title: 'Login Karyawan',
+            error: 'Silakan pilih role!'
         });
     }
 
@@ -35,8 +49,10 @@ router.post('/', (req, res, next) => {
                 return res.redirect('/dashboard/koki');
             case 'kasir':
                 return res.redirect('/dashboard/kasir');
+            case 'admin':
+                return res.redirect('/dashboard/admin');
             default:
-                return res.render('login', { title: 'Login Karyawan', error: 'Anda Siapa?' });
+                return res.render('login', { title: 'Login Karyawan', error: 'Silakan pilih role!' });
         }
     });
 });

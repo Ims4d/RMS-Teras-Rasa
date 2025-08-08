@@ -34,7 +34,7 @@ router.post('/update-status', async (req, res) => {
 
     req.app.get('wss').clients.forEach(client => {
         if (client.readyState === 1) {
-            client.send(JSON.stringify({ type: 'update_status' }));
+            client.send(JSON.stringify({ type: 'koki_update_status' }));
         }
     });
 
@@ -47,7 +47,7 @@ router.post('/update-ketersediaan', async (req, res) => {
 
     req.app.get('wss').clients.forEach(client => {
         if (client.readyState === 1) {
-            client.send(JSON.stringify({ type: 'update_ketersediaan' }));
+            client.send(JSON.stringify({ type: 'koki_update_ketersediaan' }));
         }
     });
 

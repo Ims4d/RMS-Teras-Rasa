@@ -5,7 +5,6 @@ import {
     getMenuPesanan,
     getPesanan,
     getTotalHargaMenuPesanan,
-    insertMenuPesanan,
     updateMenuPesanan,
     updateStatusPesanan,
     updateTotalHargaPesanan,
@@ -44,7 +43,7 @@ router.post('/update-status', async (req, res) => {
 
     req.app.get('wss').clients.forEach(client => {
         if (client.readyState === 1) {
-            client.send(JSON.stringify({ type: 'update_status' }));
+            client.send(JSON.stringify({ type: 'pelayan_update_status' }));
         }
     });
 
@@ -61,7 +60,7 @@ router.post('/delete-menupesanan', async (req, res) => {
 
     req.app.get('wss').clients.forEach(client => {
         if (client.readyState === 1) {
-            client.send(JSON.stringify({ type: 'delete_menu_pesanan' }));
+            client.send(JSON.stringify({ type: 'pelayan_delete_menu_pesanan' }));
         }
     });
 
@@ -80,29 +79,7 @@ router.post('/update-menupesanan', async (req, res) => {
 
     req.app.get('wss').clients.forEach(client => {
         if (client.readyState === 1) {
-            client.send(JSON.stringify({ type: 'update_menu_pesanan' }));
-        }
-    });
-
-    res.sendStatus(200);
-});
-
-router.post('/add-menupesanan', async (req, res) => {
-    const { id_pesanan, menu_pesanan, total_harga } = req.body;
-    const menuPesananObj = JSON.parse(menu_pesanan);
-    const menuItems = Object.entries(menuPesananObj);
-
-    await Promise.all(
-        menuItems.map(([id_menu, item]) =>
-            insertMenuPesanan(id_menu, id_pesanan, item.nama_menu, item.jumlah, item.sub_total)
-        )
-    );
-
-    await updateTotalHargaPesanan(id_pesanan, total_harga);
-
-    req.app.get('wss').clients.forEach(client => {
-        if (client.readyState === 1) {
-            client.send(JSON.stringify({ type: 'update_menu_pesanan' }));
+            client.send(JSON.stringify({ type: 'pelayan_update_menu_pesanan' }));
         }
     });
 
