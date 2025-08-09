@@ -14,7 +14,6 @@ async function loadData(start = '', end = '') {
     const riwayat = await res.json();
     riwayatData = riwayat; // simpan global untuk pencarian di Riwayat Penjualan
 
-    // Ringkasan
     const totalTransaksi = riwayat.length;
     const totalPendapatan = riwayat.reduce((sum, r) => sum + r.harga_total, 0);
     const rataTransaksi = totalPendapatan / (totalTransaksi || 1);
@@ -124,7 +123,6 @@ document.getElementById('btnFilter').addEventListener('click', () => {
     loadData(start, end);
 });
 
-// Pencarian di Riwayat Penjualan
 document.getElementById('searchInput').addEventListener('input', () => {
     filterRiwayat();
 });
