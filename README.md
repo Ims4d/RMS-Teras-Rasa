@@ -51,4 +51,4 @@ npm start
 ```
 
 ---
-*Dikembangkan untuk memenuhi tugas besar mata kuliah Rekayasa Perangkat Lunak 1*
+*Dibuat untuk memenuhi tugas besar mata kuliah Rekayasa Perangkat Lunak 1*
