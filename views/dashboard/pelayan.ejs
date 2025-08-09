@@ -158,9 +158,8 @@
           <div class="modal-body">
             <!-- Step Menu -->
             <div class="form-step">
-              <div class="row g-3">
-                <% menu.forEach(({ id_menu, nama_menu, harga, jenis_menu }) => { %>
-                <div class="col-12 d-flex align-items-center border rounded p-2">
+              <% menu.forEach(({ id_menu, nama_menu, harga, jenis_menu }) => { %>
+                <div class="d-flex align-items-center border rounded p-2 mb-2">
                   <img src="/img/menu/<%= id_menu %>.jpg" alt="<%= nama_menu %>" class="img-fluid rounded" style="max-width: 100px;">
                   <div class="ms-3 flex-grow-1">
                     <div class="fw-bold"><%= nama_menu %></div>
@@ -168,8 +167,7 @@
                   </div>
                   <button type="button" class="btn btn-primary" onclick="selectNewMenu('<%= id_menu %>', '<%= nama_menu %>', '<%= harga %>')">Pilih</button>
                 </div>
-                <% }) %>
-              </div>
+              <% }) %>
             </div>
 
             <!-- Step Konfirmasi -->

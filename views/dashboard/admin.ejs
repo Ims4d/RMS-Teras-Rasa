@@ -4,8 +4,715 @@
     <title><%= title %></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+      body { font-family: "Quicksand", sans-serif }
+      .sidebar { min-height: 100vh; border-right: 1px solid #e9ecef; background: #ffffff; }
+      .sidebar .nav-link { color: #333; }
+      .sidebar .nav-link.active { background-color: #f8f9fa; font-weight: 600; }
+      .nav-pills .nav-link.active { background-color: #e9ecef; color: #000 !important; }
+      @media (max-width: 767.98px) {
+        .sidebar {
+          min-height: auto;
+          border-right: none;
+        }
+      }
+    </style>
   </head>
-  <body>
-    <h1><%= title %></h1>
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container-fluid">
+        <button class="btn btn-outline-secondary d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+          <i class="bi bi-list"></i>
+        </button>
+        <a class="navbar-brand mb-0 h5" href="#"> <%= title %> </a>
+        <div class="d-flex ms-auto">
+          <form action="pelayan/logout" method="post" class="m-0">
+            <button type="submit" class="btn btn-danger">Logout</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row g-0">
+        <!-- Sidebar for large screens -->
+        <nav class="col-lg-2 d-none d-lg-block sidebar p-3">
+          <ul class="nav nav-pills flex-column" id="sidebarMenu" role="tablist">
+            <li class="nav-item mb-1">
+              <a class="nav-link active" id="link-laporan" data-bs-toggle="pill" href="#laporan-penjualan" role="tab" aria-controls="laporan-penjualan" aria-selected="true">
+                <i class="bi bi-file-earmark-text me-2"></i>Laporan Penjualan
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link" id="link-riwayat" data-bs-toggle="pill" href="#riwayat-penjualan" role="tab" aria-controls="riwayat-penjualan" aria-selected="false">
+                <i class="bi bi-clock-history me-2"></i>Riwayat Penjualan
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link" id="link-kelola-menu" data-bs-toggle="pill" href="#kelola-menu" role="tab" aria-controls="kelola-menu" aria-selected="false">
+                <i class="bi bi-card-list me-2"></i>Kelola Menu
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link" id="link-kelola-meja" data-bs-toggle="pill" href="#kelola-meja" role="tab" aria-controls="kelola-meja" aria-selected="false">
+                <i class="bi bi-table me-2"></i>Kelola Meja
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link" id="link-kelola-koki" data-bs-toggle="pill" href="#kelola-koki" role="tab" aria-controls="kelola-koki" aria-selected="false">
+                <i class="bi bi-person-workspace me-2"></i>Kelola Koki
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link" id="link-kelola-kasir" data-bs-toggle="pill" href="#kelola-kasir" role="tab" aria-controls="kelola-kasir" aria-selected="false">
+                <i class="bi bi-people me-2"></i>Kelola Kasir
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link" id="link-kelola-pelayan" data-bs-toggle="pill" href="#kelola-pelayan" role="tab" aria-controls="kelola-pelayan" aria-selected="false">
+                <i class="bi bi-person-lines-fill me-2"></i>Kelola Pelayan
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link" id="link-kelola-admin" data-bs-toggle="pill" href="#kelola-admin" role="tab" aria-controls="kelola-admin" aria-selected="false">
+                <i class="bi bi-shield-lock me-2"></i>Kelola Admin
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Offcanvas for small screens -->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasSidebarLabel">Menu</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body p-0">
+            <nav class="sidebar p-3">
+              <ul class="nav nav-pills flex-column" id="offcanvasSidebarMenu" role="tablist">
+                <li class="nav-item mb-1">
+                  <a class="nav-link active" data-bs-toggle="pill" href="#laporan-penjualan" role="tab">Laporan Penjualan</a>
+                </li>
+                <li class="nav-item mb-1">
+                  <a class="nav-link" data-bs-toggle="pill" href="#riwayat-penjualan" role="tab">Riwayat Penjualan</a>
+                </li>
+                <li class="nav-item mb-1">
+                  <a class="nav-link" data-bs-toggle="pill" href="#kelola-menu" role="tab">Kelola Menu</a>
+                </li>
+                <li class="nav-item mb-1">
+                  <a class="nav-link" data-bs-toggle="pill" href="#kelola-meja" role="tab">Kelola Meja</a>
+                </li>
+                <li class="nav-item mb-1">
+                  <a class="nav-link" data-bs-toggle="pill" href="#kelola-koki" role="tab">Kelola Koki</a>
+                </li>
+                <li class="nav-item mb-1">
+                  <a class="nav-link" data-bs-toggle="pill" href="#kelola-kasir" role="tab">Kelola Kasir</a>
+                </li>
+                <li class="nav-item mb-1">
+                  <a class="nav-link" data-bs-toggle="pill" href="#kelola-pelayan" role="tab">Kelola Pelayan</a>
+                </li>
+                <li class="nav-item mb-1">
+                  <a class="nav-link" data-bs-toggle="pill" href="#kelola-admin" role="tab">Kelola Admin</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <main class="col-lg-10 col-12 p-4">
+          <div class="tab-content">
+            <div id="laporan-penjualan" class="tab-pane fade show active"><br>
+              <!-- Filter -->
+              <div class="row mb-3">
+                <div class="col-md-3">
+                  <input type="date" id="startDate" class="form-control">
+                </div>
+                <div class="col-md-3">
+                  <input type="date" id="endDate" class="form-control">
+                </div>
+                <div class="col-md-3">
+                  <button id="btnFilter" class="btn btn-primary w-100">Terapkan Filter</button>
+                </div>
+              </div>
+
+              <!-- Ringkasan -->
+              <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                  <div class="card border-success shadow-sm">
+                    <div class="card-body">
+                      <h6 class="card-title text-success">Total Transaksi</h6>
+                      <h3 id="totalTransaksi" class="fw-bold">0</h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card border-primary shadow-sm">
+                    <div class="card-body">
+                      <h6 class="card-title text-primary">Total Pendapatan</h6>
+                      <h3 id="totalPendapatan" class="fw-bold">Rp 0</h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card border-warning shadow-sm">
+                    <div class="card-body">
+                      <h6 class="card-title text-warning">Rata-rata Per Transaksi</h6>
+                      <h3 id="rataTransaksi" class="fw-bold">Rp 0</h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Grafik -->
+              <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                  <h5 class="card-title mb-3">Grafik Penjualan Harian</h5>
+                  <canvas id="chartPenjualan" height="100"></canvas>
+                </div>
+              </div>
+
+              <!-- Grafik 10 Menu Terlaris -->
+              <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                  <h5 class="card-title mb-3">10 Menu Terlaris</h5>
+                  <canvas id="chartMenuTerlaris" height="100"></canvas>
+                </div>
+              </div>
+
+              <!-- Tabel Penjualan -->
+              <div class="card shadow-sm">
+                <div class="card-body table-responsive">
+                  <h5 class="card-title mb-3">Tabel Penjualan</h5>
+                  <table class="table table-bordered table-hover table-sm align-middle" id="tableLaporan">
+                    <thead class="table-light">
+                      <tr>
+                        <th>#</th>
+                        <th>Nama Pelanggan</th>
+                        <th>Menu Pesanan</th>
+                        <th>Harga Total</th>
+                        <th>Meja</th>
+                        <th>Kasir</th>
+                        <th>Waktu Bayar</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div id="riwayat-penjualan" class="tab-pane fade"><br>
+              <!-- Filter Pencarian -->
+              <div class="row mb-3 g-2">
+                <div class="col-md-4">
+                  <input type="text" id="searchInput" class="form-control" placeholder="Cari...">
+                </div>
+                <div class="col-md-4">
+                  <select id="filterColumn" class="form-select">
+                    <option value="">Semua Kolom</option>
+                    <option value="1">Nama Pelanggan</option>
+                    <option value="2">Menu Pesanan</option>
+                    <option value="3">Harga Total</option>
+                    <option value="4">Meja</option>
+                    <option value="5">Kasir</option>
+                    <option value="6">Waktu Bayar</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Tabel Riwayat -->
+              <div class="card shadow-sm">
+                <div class="card-body table-responsive">
+                  <h5 class="card-title mb-3">Riwayat Penjualan</h5>
+                  <table class="table table-bordered table-hover table-sm align-middle" id="tableRiwayat">
+                    <thead class="table-light">
+                      <tr>
+                        <th>#</th>
+                        <th>Nama Pelanggan</th>
+                        <th>Menu Pesanan</th>
+                        <th>Harga Total</th>
+                        <th>Meja</th>
+                        <th>Kasir</th>
+                        <th>Waktu Bayar</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div id="kelola-menu" class="tab-pane fade"><br>
+              <div class="d-flex justify-content-between mb-4">
+                <h3 class="m-0">Kelola Menu</h3>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-tambah-menu">Tambah Menu</button>
+              </div>
+              <div class="row g-3">
+                <% menu.forEach(({ id_menu, nama_menu, jenis_menu, harga }) => { %>
+                  <div class="col-md-6">
+                    <div class="d-flex align-items-start border rounded p-2 mb-2 bg-white">
+                      <img src="/img/menu/<%= id_menu %>.jpg" alt="<%= nama_menu %>" class="img-fluid rounded" style="max-width: 150px;">
+                      <div class="ms-3 flex-grow-1">
+                        <div class="fw-bold"><%= nama_menu %></div>
+                        <div class="text-muted small"><% if (jenis_menu === 'MAKANAN'){ %> Makanan <% } else { %> Minuman <% } %><br>Rp <%= harga.toLocaleString('id-ID') %></div>
+                      </div>
+                      <div class="d-flex justify-content-center align-items-center">
+                        <button class="btn btn-danger me-1" onclick="deleteMenu('<%= id_menu %>')">Hapus</button>
+                        <button class="btn btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#modal-edit-menu" onclick="openEditMenuModal('<%= id_menu %>', '<%= nama_menu %>', '<%= jenis_menu %>', '<%= harga %>')">Edit</button>
+                      </div>
+                    </div>
+                  </div>
+                <% }) %>
+              </div>
+            </div>
+
+            <div id="kelola-meja" class="tab-pane fade"><br>
+              <div class="d-flex justify-content-between mb-4">
+                <h3 class="m-0">Kelola Meja</h3>
+                <button class="btn btn-primary" data-bs-toggle="modal" onclick="addMeja()">Tambah Meja</button>
+              </div>
+              <div class="row g-3">
+                <% meja.forEach(({ id_meja, qr_code }) => { %>
+                  <div class="col-md-6">
+                    <div class="d-flex align-items-start border rounded p-2 bg-white">
+                      <img src="<%= qr_code %>" alt="QR Meja <%= id_meja %>" class="img-fluid rounded" style="max-width:256px;">
+                      <div class="ms-3 flex-grow-1">
+                        <div class="fw-bold mb-2">ID (Nomor) Meja: <%= id_meja %></div>
+                        <button class="btn btn-sm btn-outline-success me-1" onclick="downloadQRCode('<%= qr_code %>', 'QR-Meja-<%= id_meja %>.png')">
+                          Download Gambar
+                        </button>
+                      </div>
+                      <button class="btn btn-sm btn-danger" onclick="deleteMeja('<%= id_meja %>')">Hapus</button>
+                    </div>
+                  </div>
+                <% }) %>
+              </div>
+            </div>
+
+            <div id="kelola-koki" class="tab-pane fade"><br>
+              <div class="d-flex justify-content-between mb-4">
+                <h3 class="m-0">Kelola Karyawan Koki</h3>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-tambah-koki">Tambah Karyawan</button>
+              </div>
+              <% koki.forEach(({ id_koki, nama_koki, username, password }) => { %>
+                <div class="d-flex align-items-center border rounded p-2 mb-2 bg-white">
+                  <div class="ms-3 flex-grow-1">
+                    <div class="fw-bold"><%= nama_koki %></div>
+                  </div>
+                  <div class="d-flex justify-content-center align-items-center">
+                    <button class="btn btn-danger me-1" onclick="deleteKoki('<%= id_koki %>')">Hapus</button>
+                    <button class="btn btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#modal-edit-koki" onclick="openEditKokiModal('<%= id_koki %>', '<%= nama_koki %>', '<%= username %>', '<%= password %>')">Edit</button>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+
+            <div id="kelola-kasir" class="tab-pane fade"><br>
+              <div class="d-flex justify-content-between mb-4">
+                <h3 class="m-0">Kelola Karyawan Kasir</h3>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-tambah-kasir">Tambah Karyawan</button>
+              </div>
+              <% kasir.forEach(({ id_kasir, nama_kasir, username, password }) => { %>
+                <div class="d-flex align-items-center border rounded p-2 mb-2 bg-white">
+                  <div class="ms-3 flex-grow-1">
+                    <div class="fw-bold"><%= nama_kasir %></div>
+                  </div>
+                  <div class="d-flex justify-content-center align-items-center">
+                    <button class="btn btn-danger me-1" onclick="deleteKasir('<%= id_kasir %>')">Hapus</button>
+                    <button class="btn btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#modal-edit-kasir" onclick="openEditKasirModal('<%= id_kasir %>', '<%= nama_kasir %>', '<%= username %>', '<%= password %>')">Edit</button>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+
+            <div id="kelola-pelayan" class="tab-pane fade"><br>
+              <div class="d-flex justify-content-between mb-4">
+                <h3 class="m-0">Kelola Karyawan Pelayan</h3>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-tambah-pelayan">Tambah Karyawan</button>
+              </div>
+              <% pelayan.forEach(({ id_pelayan, nama_pelayan, username, password }) => { %>
+                <div class="d-flex align-items-center border rounded p-2 mb-2 bg-white">
+                  <div class="ms-3 flex-grow-1">
+                    <div class="fw-bold"><%= nama_pelayan %></div>
+                  </div>
+                  <div class="d-flex justify-content-center align-items-center">
+                    <button class="btn btn-danger me-1" onclick="deletePelayan('<%= id_pelayan %>')">Hapus</button>
+                    <button class="btn btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#modal-edit-pelayan" onclick="openEditPelayanModal('<%= id_pelayan %>', '<%= nama_pelayan %>', '<%= username %>', '<%= password %>')">Edit</button>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+
+            <div id="kelola-admin" class="tab-pane fade"><br>
+              <div class="d-flex justify-content-between mb-4">
+                <h3 class="m-0">Kelola Karyawan Admin</h3>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-tambah-admin">Tambah Karyawan</button>
+              </div>
+              <% admin.forEach(({ id_admin, nama_admin, username, password }) => { %>
+                <div class="d-flex align-items-center border rounded p-2 mb-2 bg-white">
+                  <div class="ms-3 flex-grow-1">
+                    <div class="fw-bold"><%= nama_admin %></div>
+                  </div>
+                  <div class="d-flex justify-content-center align-items-center">
+                    <button class="btn btn-danger me-1" onclick="deleteAdmin('<%= id_admin %>')">Hapus</button>
+                    <button class="btn btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#modal-edit-admin" onclick="openEditAdminModal('<%= id_admin %>', '<%= nama_admin %>', '<%= username %>', '<%= password %>')">Edit</button>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Modal Edit Menu -->
+    <div class="modal" id="modal-edit-menu">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Menu</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="cancelEditMenu()"></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="d-flex justify-content-center align-items-center p-2 mb-3 border rounded">
+              <div class="flex-grow-1">
+                <img id="edit-menu-img" class="img-fluid rounded" style="max-width:100px;"/>
+              </div>
+              <div>
+                <label for="edit-gambar-menu" class="btn btn-primary">Ganti gambar</label>
+                <input type="file" id="edit-gambar-menu" name="edit_gambar_menu" accept="image/jpeg" style="display: none;">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="edit-nama-menu" class="form-label">Nama menu</label>
+              <input type="text" class="form-control" id="edit-nama-menu" name="edit_nama_menu" placeholder="Masukkan nama menu...">
+            </div>
+            <div class="mb-3">
+              <div class="btn-group w-100">
+                <input type="radio" class="btn-check" name="edit_jenis_menu" id="edit-jenis-menu-makanan" value="MAKANAN">
+                <label class="btn btn-outline-primary" for="edit-jenis-menu-makanan">Makanan</label>
+                <input type="radio" class="btn-check" name="edit_jenis_menu" id="edit-jenis-menu-minuman" value="MINUMAN">
+                <label class="btn btn-outline-primary" for="edit-jenis-menu-minuman">Minuman</label>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="edit-harga-menu" class="form-label">Harga menu</label>
+              <input type="text" class="form-control" inputmode="numeric" pattern="\d*" id="edit-harga-menu" name="edit_harga" placeholder="Masukkan harga menu...">
+            </div>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cancelEditMenu()">Batal</button>
+            <button type="button" id="btn-save-edit-menu" class="btn btn-primary" onclick="confirmEditMenu()" disabled>Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Tambah Menu -->
+    <div class="modal" id="modal-tambah-menu">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Tambah Menu</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="cancelAddMenu()"></button>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex justify-content-center align-items-center p-2 mb-3 border rounded">
+              <div id="add-menu-img-cont" class="d-none flex-grow-1">
+                <img id="add-menu-img" class="img-fluid rounded" style="max-width:100px;"/>
+              </div>
+              <div>
+                <label for="add-gambar-menu" class="btn btn-primary">Upload gambar</label>
+                <input type="file" id="add-gambar-menu" name="add_gambar_menu" accept="image/jpeg" style="display: none;">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="add-nama-menu" class="form-label">Nama menu</label>
+              <input type="text" class="form-control" id="add-nama-menu" name="add_nama_menu" placeholder="Masukkan nama menu...">
+            </div>
+            <div class="mb-3">
+              <div class="btn-group w-100">
+                <input type="radio" class="btn-check" name="add_jenis_menu" id="add-jenis-menu-makanan" value="MAKANAN" checked>
+                <label class="btn btn-outline-primary" for="add-jenis-menu-makanan">Makanan</label>
+                <input type="radio" class="btn-check" name="add_jenis_menu" id="add-jenis-menu-minuman" value="MINUMAN">
+                <label class="btn btn-outline-primary" for="add-jenis-menu-minuman">Minuman</label>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="add-harga-menu" class="form-label">Harga menu</label>
+              <input type="text" class="form-control" inputmode="numeric" pattern="\d*" id="add-harga-menu" name="add_harga" placeholder="Masukkan harga menu...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cancelAddMenu()">Batal</button>
+            <button type="button" id="btn-save-add-menu" class="btn btn-primary" onclick="confirmAddMenu()" disabled>Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Tambah Koki -->
+    <div class="modal" id="modal-tambah-koki">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Tambah Karyawan Koki</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="cancelAddKoki()"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="add-nama-koki" class="form-label">Nama koki</label>
+              <input type="text" class="form-control" id="add-nama-koki" name="add_nama_koki" placeholder="Masukkan nama koki...">
+            </div>
+            <div class="mb-3">
+              <label for="add-username-koki" class="form-label">Username</label>
+              <input type="text" class="form-control" id="add-username-koki" name="add_username_koki" placeholder="Masukkan username...">
+            </div>
+            <div class="mb-3">
+              <label for="add-password-koki" class="form-label">Password</label>
+              <input type="text" class="form-control" id="add-password-koki" name="add_password_koki" placeholder="Masukkan password...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cancelAddKoki()">Batal</button>
+            <button type="button" id="btn-save-add-koki" class="btn btn-primary" onclick="confirmAddKoki()" disabled>Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Edit Koki -->
+    <div class="modal" id="modal-edit-koki">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Karyawan Koki</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="cancelEditKoki()"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="edit-nama-koki" class="form-label">Nama koki</label>
+              <input type="text" class="form-control" id="edit-nama-koki" name="edit_nama_koki" placeholder="Masukkan nama koki...">
+            </div>
+            <div class="mb-3">
+              <label for="edit-username-koki" class="form-label">Username</label>
+              <input type="text" class="form-control" id="edit-username-koki" name="edit_username_koki" placeholder="Masukkan username...">
+            </div>
+            <div class="mb-3">
+              <label for="edit-password-koki" class="form-label">Password</label>
+              <input type="text" class="form-control" id="edit-password-koki" name="edit_password_koki" placeholder="Masukkan password...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cancelEditKoki()">Batal</button>
+            <button type="button" id="btn-save-edit-koki" class="btn btn-primary" onclick="confirmEditKoki()" disabled>Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Tambah Kasir -->
+    <div class="modal" id="modal-tambah-kasir">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Tambah Karyawan Kasir</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="cancelAddKasir()"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="add-nama-kasir" class="form-label">Nama kasir</label>
+              <input type="text" class="form-control" id="add-nama-kasir" name="add_nama_kasir" placeholder="Masukkan nama kasir...">
+            </div>
+            <div class="mb-3">
+              <label for="add-username-kasir" class="form-label">Username</label>
+              <input type="text" class="form-control" id="add-username-kasir" name="add_username_kasir" placeholder="Masukkan username...">
+            </div>
+            <div class="mb-3">
+              <label for="add-password-kasir" class="form-label">Password</label>
+              <input type="text" class="form-control" id="add-password-kasir" name="add_password_kasir" placeholder="Masukkan password...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cancelAddKasir()">Batal</button>
+            <button type="button" id="btn-save-add-kasir" class="btn btn-primary" onclick="confirmAddKasir()" disabled>Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Edit Kasir -->
+    <div class="modal" id="modal-edit-kasir">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Karyawan Kasir</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="cancelEditKasir()"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="edit-nama-kasir" class="form-label">Nama kasir</label>
+              <input type="text" class="form-control" id="edit-nama-kasir" name="edit_nama_kasir" placeholder="Masukkan nama kasir...">
+            </div>
+            <div class="mb-3">
+              <label for="edit-username-kasir" class="form-label">Username</label>
+              <input type="text" class="form-control" id="edit-username-kasir" name="edit_username_kasir" placeholder="Masukkan username...">
+            </div>
+            <div class="mb-3">
+              <label for="edit-password-kasir" class="form-label">Password</label>
+              <input type="text" class="form-control" id="edit-password-kasir" name="edit_password_kasir" placeholder="Masukkan password...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cancelEditKasir()">Batal</button>
+            <button type="button" id="btn-save-edit-kasir" class="btn btn-primary" onclick="confirmEditKasir()" disabled>Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Tambah Pelayan -->
+    <div class="modal" id="modal-tambah-pelayan">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Tambah Karyawan Pelayan</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="cancelAddPelayan()"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="add-nama-pelayan" class="form-label">Nama pelayan</label>
+              <input type="text" class="form-control" id="add-nama-pelayan" name="add_nama_pelayan" placeholder="Masukkan nama pelayan...">
+            </div>
+            <div class="mb-3">
+              <label for="add-username-pelayan" class="form-label">Username</label>
+              <input type="text" class="form-control" id="add-username-pelayan" name="add_username_pelayan" placeholder="Masukkan username...">
+            </div>
+            <div class="mb-3">
+              <label for="add-password-pelayan" class="form-label">Password</label>
+              <input type="text" class="form-control" id="add-password-pelayan" name="add_password_pelayan" placeholder="Masukkan password...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cancelAddPelayan()">Batal</button>
+            <button type="button" id="btn-save-add-pelayan" class="btn btn-primary" onclick="confirmAddPelayan()" disabled>Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Edit Pelayan -->
+    <div class="modal" id="modal-edit-pelayan">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Karyawan Pelayan</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="cancelEditPelayan()"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="edit-nama-pelayan" class="form-label">Nama pelayan</label>
+              <input type="text" class="form-control" id="edit-nama-pelayan" name="edit_nama_pelayan" placeholder="Masukkan nama pelayan...">
+            </div>
+            <div class="mb-3">
+              <label for="edit-username-pelayan" class="form-label">Username</label>
+              <input type="text" class="form-control" id="edit-username-pelayan" name="edit_username_pelayan" placeholder="Masukkan username...">
+            </div>
+            <div class="mb-3">
+              <label for="edit-password-pelayan" class="form-label">Password</label>
+              <input type="text" class="form-control" id="edit-password-pelayan" name="edit_password_pelayan" placeholder="Masukkan password...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cancelEditPelayan()">Batal</button>
+            <button type="button" id="btn-save-edit-pelayan" class="btn btn-primary" onclick="confirmEditPelayan()" disabled>Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Tambah Admin -->
+    <div class="modal" id="modal-tambah-admin">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Tambah Karyawan Admin</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="cancelAddAdmin()"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="add-nama-admin" class="form-label">Nama admin</label>
+              <input type="text" class="form-control" id="add-nama-admin" name="add_nama_admin" placeholder="Masukkan nama admin...">
+            </div>
+            <div class="mb-3">
+              <label for="add-username-admin" class="form-label">Username</label>
+              <input type="text" class="form-control" id="add-username-admin" name="add_username_admin" placeholder="Masukkan username...">
+            </div>
+            <div class="mb-3">
+              <label for="add-password-admin" class="form-label">Password</label>
+              <input type="text" class="form-control" id="add-password-admin" name="add_password_admin" placeholder="Masukkan password...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cancelAddAdmin()">Batal</button>
+            <button type="button" id="btn-save-add-admin" class="btn btn-primary" onclick="confirmAddAdmin()" disabled>Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Edit Admin -->
+    <div class="modal" id="modal-edit-admin">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Karyawan Admin</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="cancelEditAdmin()"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="edit-nama-admin" class="form-label">Nama admin</label>
+              <input type="text" class="form-control" id="edit-nama-admin" name="edit_nama_admin" placeholder="Masukkan nama admin...">
+            </div>
+            <div class="mb-3">
+              <label for="edit-username-admin" class="form-label">Username</label>
+              <input type="text" class="form-control" id="edit-username-admin" name="edit_username_admin" placeholder="Masukkan username...">
+            </div>
+            <div class="mb-3">
+              <label for="edit-password-admin" class="form-label">Password</label>
+              <input type="text" class="form-control" id="edit-password-admin" name="edit_password_admin" placeholder="Masukkan password...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cancelEditAdmin()">Batal</button>
+            <button type="button" id="btn-save-edit-admin" class="btn btn-primary" onclick="confirmEditAdmin()" disabled>Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/javascripts/admin.js"></script>
+    <script>
+      // Sync offcanvas nav clicks to tab active state (so active class stays consistent)
+      document.querySelectorAll('#offcanvasSidebarMenu a[data-bs-toggle="pill"]').forEach(a => {
+        a.addEventListener('click', () => {
+          // hide offcanvas after click (mobile)
+          const off = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasSidebar'));
+          if (off) off.hide();
+        });
+      });
+    </script>
   </body>
 </html>

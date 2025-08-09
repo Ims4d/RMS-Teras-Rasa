@@ -64,11 +64,11 @@ const updateMeja = (id_meja, new_id_meja) =>
         );
     });
 
-const insertMeja = () =>
+const insertMeja = (status_meja) =>
     new Promise((resolve, reject) => {
         connection.query(
             'INSERT INTO meja (status_meja) VALUES (?)',
-            ['KOSONG'],
+            [status_meja],
             (error, results) => {
                 if (error) return reject(error);
                 resolve(results.insertId);

@@ -38,7 +38,7 @@ router.post('/', (req, res, next) => {
         }
 
         req.session.user = {
-            id: user.id_pelayan || user.id_koki || user.id_kasir,
+            id: user.id_pelayan || user.id_koki || user.id_kasir || user.id_admin,
             role: role
         };
 
@@ -52,7 +52,7 @@ router.post('/', (req, res, next) => {
             case 'admin':
                 return res.redirect('/dashboard/admin');
             default:
-                return res.render('login', { title: 'Login Karyawan', error: 'Silakan pilih role!' });
+                return res.render('login', { title: 'Login Karyawan', error: 'Anda siapa?' });
         }
     });
 });

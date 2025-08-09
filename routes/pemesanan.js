@@ -11,11 +11,10 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     if (!req.query.idm) {
-        res.render('peringatan', {
+        return res.render('peringatan', {
             title: "Peringatan",
             message: "URL tidak valid!"
         });
-        return;
     }
 
     const menu = await getMenu();

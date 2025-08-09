@@ -12,8 +12,11 @@ const findUser = (username, role, callback) => {
         case 'kasir':
             tableName = 'kasir';
             break;
+        case 'admin':
+            tableName = 'admin';
+            break;
         default:
-            return callback(new Error('Invalid role'));
+            return callback(null, '');
     }
 
     connection.query(`SELECT * FROM ${tableName} WHERE username = ?`, [username], (err, results) => {

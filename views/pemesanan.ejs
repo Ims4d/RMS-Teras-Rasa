@@ -52,9 +52,8 @@
       <!-- Step Menu -->
       <div class="form-step d-none">
         <h3 class="mb-3">Pilih Menu</h3>
-        <div class="row g-3">
-          <% menu.forEach(({ id_menu, nama_menu, harga, jenis_menu }) => { %>
-          <div class="col-12 d-flex align-items-center border rounded p-2 bg-white">
+        <% menu.forEach(({ id_menu, nama_menu, harga, jenis_menu }) => { %>
+          <div class="d-flex align-items-center border rounded p-2 mb-2 bg-white">
             <img src="/img/menu/<%= id_menu %>.jpg" alt="<%= nama_menu %>" class="img-fluid rounded" style="max-width: 100px;">
             <div class="ms-3 flex-grow-1">
               <div class="fw-bold"><%= nama_menu %></div>
@@ -64,8 +63,7 @@
               Tambah
             </button>
           </div>
-          <% }) %>
-        </div>
+        <% }) %>
         <hr class="my-4">
         <h4>Pesanan Anda</h4>
         <div id="order-summary" class="border rounded p-3 bg-light">Belum ada pesanan.</div>
