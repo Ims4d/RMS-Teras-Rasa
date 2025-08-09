@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
+* {font-family: 'Quicksand', sans-serif; }
+
+.main {
+  max-width: 1300px;
+  margin: auto;
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 80px;
+}
+
+.sambutan {
+  font-size: 20px;
+  font-weight: bold;
+  position: relative;
+  padding-left: 130px;
+}
+
+.sambutan::before {
+  content: '';
+  width: 110px;
+  border: 3px solid rgb(255, 128, 2);
+  position: absolute;
+  left: 0;
+  bottom: 40%;
+}
+
+.sambutan span {
+  color: rgb(255, 128, 2);
+}
+
+.main-kanan img {
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 200ms ease, transform 200ms ease;
+}
+
+.main-kanan img:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.main-kiri h1 {
+  font-size: 4em;
+  margin: 50px 0 30px 0;
+}
+
+.main-kiri > p {
+  text-align: left;
+  font-weight: 600;
+  color: rgb(118, 118, 118);
+  line-height: 2em;
+}
+
+.main-kiri > .button-group > button {
+  background-color: rgb(255, 128, 2);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 50px;
+  font-weight: bold;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
+  transition: background-color 200ms ease, 
+              transform 150ms ease, 
+              box-shadow 200ms ease;
+}
+
+.main-kiri > .button-group > button:hover {
+  background-color: rgb(230, 115, 5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+.main-kiri > .button-group > button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}

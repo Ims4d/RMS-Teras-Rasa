@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+ 
+* {font-family: 'Quicksand', sans-serif; }
+
+.header {
+  max-width: 1300px;
+  margin: auto;
+}
+
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  margin-top: 20px;
+}
+
+.navbar .navbar__navbar-title {
+  display: flex;
+  align-items: center;
+}
+
+.navbar .navbar__navbar-title .image-logo {
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.navbar .navbar__navbar-title .title {
+  font-size: 1.4em;
+  font-weight: bolder;
+}
+
+.navbar__link-nav {
+  display: flex;
+  list-style: none;
+}
+
+.navbar__link-nav .navbar-item a {
+  text-decoration: none;
+  margin-right: 40px;
+  color: black;
+  font-weight: 400;
+  position: relative;
+  padding-bottom: 8px;
+  transition: color 300ms ease;
+}
+
+.navbar__link-nav .navbar-item a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: rgb(255, 128, 2);
+  transition: width 300ms ease;
+}
+
+.navbar__link-nav .navbar-item a:hover::before {
+  width: 100%;
+}
+
+.navbar__link-nav .navbar-item a:hover {
+  color: rgb(255, 128, 2);
+}
+
+
+.navbar .button-group .button-login {
+  background-color: rgb(255, 128, 2);
+  color: white;
+  padding: 15px 35px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 200ms ease, transform 200ms ease;
+}
+
+.navbar .button-group .button-login:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+  background-color: rgb(226, 113, 0);
+}
+
+

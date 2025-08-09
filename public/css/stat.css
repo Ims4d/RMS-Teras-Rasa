@@ -1,0 +1,19 @@
+.stat-container {
+  max-width: 1300px;
+  margin: 60px auto 0 auto;
+  font-size: 1.4em;
+  display: flex;
+}
+
+.stat-item {
+  margin-right: 100px;
+}
+
+.stat-item .stat-atas{
+  display: flex;
+}
+
+.stat-deskripsi {
+  font-size: 16px;
+  margin-top: 10px;
+}
